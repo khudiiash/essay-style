@@ -21,7 +21,7 @@ You can paste an essay to the textarea and it will highlight all possible stylis
 - Idiomatic expressions.
 - Relevance of used sources.
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Sample essay for check. Paste it to the textarea on the website to see the result**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Sample essay for check:**
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**Epidemiological Studies**
 
