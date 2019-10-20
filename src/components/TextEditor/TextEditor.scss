@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+
+
+$mistake-color: rgb(255, 255, 124);
+$sentence-color: #fce5cd;
+$repetition-color: #c9daf8;
+$punctuation-color: #ead1dc;
+
+
+body {
+    font-size: 18px;
+    font-weight: 500;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Times New Roman', Times, serif, serif;
+    box-sizing: border-box;
+    background: url('https://images.pexels.com/photos/8892/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat;
+    background-size: 100% 100% 100% 100%;
+    overflow: hidden;
+}
+
+.editor {
+    background: #fff;
+    opacity: 1;
+
+    &__center {
+        background: #fff;
+        display: flex;
+        justify-content: center;
+    }
+   
+    &__text-area {
+        
+        resize: none;
+        background: #fff;
+        position: absolute;
+        padding: 2em;
+        width: 35%;
+        height: 90vh;
+        margin: 10px;
+        text-indent: 2em;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: 'Times New Roman', Times, serif, serif;
+        font-family: "Montserrat";
+        z-index: 3;
+        opacity: 1;
+    }
+    &__paragraph {
+        background: rgb(255, 255, 255);
+        position: absolute;
+        text-align: left;
+        padding: 2em;
+        border: 1px solid rgba(0,0,0,.2);
+        width: 35%;
+        height: 90vh;
+        margin: 10px;
+        
+        text-indent: 2em;
+        font-size: 17px;
+        font-weight: 500;
+        z-index: 1;
+        opacity: 1;
+        overflow: scroll;
+        text-indent: 2em;
+        box-shadow: 0 0 15px rgba(0,0,0,1)
+        
+    
+    }
+    &__paragraph::-webkit-scrollbar { width: 0 !important }
+    
+    &__comment {
+        display: flex;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+        color: #2d2d2d;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        height: auto;
+        width: 15vw;
+        top: 35%;
+        left: 72%;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,.4);
+        padding: 10px;
+        opacity: 0;
+        transition: 300ms;
+        background: #2d2d2d;
+        color: white;
+        z-index: 1;
+    }
+
+}
+
+.mistake {
+    background: $mistake-color;
+    opacity: 1;
+    transition: 400ms;
+    cursor: pointer;
+    border-radius: 10%;
+
+
+}
+.sentence {
+    background: $sentence-color;
+    transition: 400ms;
+    cursor: pointer;
+    border-radius: 10%;
+
+}
+
+.repetition {
+    background: $repetition-color;
+    transition: 400ms;
+    cursor: pointer;
+    border-radius: 10%;
+}
+.punctuation {
+    background: $punctuation-color;
+    transition: 400ms;
+    cursor: pointer;
+    border-radius: 10%;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .editor {
+        &__text-area,&__paragraph {
+            width: 80%;
+            margin-left: 0;
+        }
+        &__comment {
+            width: 50%;
+            left: 22.5%;
+            top: 85%;
+        }
+        
+    }
+    
+}
