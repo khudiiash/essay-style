@@ -31,11 +31,11 @@ You can paste an essay to the textarea and it will highlight all possible stylis
   
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Therefore, it is safe to deduce that; through epidemiological studies, and the determination of risk factors associated with certain diseases, evidence-based practice can be improved. Evidence-based medicine uses a system of turning clinical into questions that need systematic solving (Gulis & Fujino, 2019). By implementing epidemiological studies into evidence-based practices, risk factors associated with certain diseases can be used to promote the health of individuals. This is done by advising individuals against risk factors of certain diseases when using evidence-based methods.
  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**References**
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;References
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Gulis, G., & Fujino, Y. (2019). Epidemiology, Population Health, and Health Impact      Assessment. Journal of public health, 12(8), pp. 114-125.
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**IMPORTANT NOTES**
 
 1. The app is specified for a scenario when you paste a whole essay in the textarea. If you decide to type it in, textarea will be hidden after finding the first issue.
-2. It is not recommended to copy the text from the site back to your document because mistakes changing the text are possible. Therefore, use it for reference only.
+2. It is not recommended to copy the text from the site back to your document because errors changing the text are possible. Therefore, use it for reference only.
