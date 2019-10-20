@@ -4,7 +4,7 @@ A simple app to check academic style and citation formatting in an essay.
 
 You can paste an essay to the textarea and it will highlight all possible stylistic and formatting issues.
 
-WEBSITE: https://quality-control.netlify.com/
+**WEBSITE: https://quality-control.netlify.com/**
 
 **Included Issues:**
 
