@@ -19,19 +19,6 @@ import informal from "../../libraries/informal"
 import prepositions from "../../libraries/prepositions"
 import irregular from "../../libraries/irregular"
 
-
-const nlp = require('compromise');
-let sentence = "Until morning, he gathered his powerful army, but then a man came and broke his face"
-
-let { subject } = nlp(sentence).sentences().list[0]
-let { verb: {terms: verb} } = nlp(sentence).sentences().list[0]
-
-
-console.log("Sentence: ",nlp(sentence).sentences())
-
-console.log("Subject: ",subject)
-console.log("Verb: ",verb)
-
 const countBrackets = (str) => {
   const re = /\(.*?\)/g
   return ((str || '').match(re) || []).length
