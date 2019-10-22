@@ -16,7 +16,9 @@ body {
     font-family: 'Times New Roman', Times, serif, serif;
     box-sizing: border-box;
     background: url('https://images.pexels.com/photos/8892/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat;
-    background-size: 100% 100% 100% 100%;
+    background: url('https://images.pexels.com/photos/355747/pexels-photo-355747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat;
+
+    background-size: cover;
     overflow: hidden;
 }
 
@@ -58,7 +60,7 @@ body {
         margin: 10px;
         
         text-indent: 2em;
-        font-size: 17px;
+        font-size: 18px;
         font-weight: 500;
         z-index: 1;
         opacity: 1;
@@ -92,9 +94,7 @@ body {
         color: white;
         z-index: 1;
     }
-
 }
-
 .mistake {
     background: $mistake-color;
     opacity: 1;
