@@ -35,8 +35,6 @@ String.prototype.replaceAt = function(index, replacement) {
   );
 };
 
-const nlp = require("compromise");
-
 const globalExceptions = ["understand", "understood", "many", "experience"];
 
 String.prototype.capitalize = function() {
@@ -135,10 +133,14 @@ class TextEditor extends React.Component {
       suggestions = checkRepetitions(text, suggestions);
       suggestions = passiveVoiceChecker(text, suggestions);
       suggestions = factChecker(text, suggestions);
-      suggestions = checkConcludingSentences(text, suggestions);
       suggestions = checkReferences(text, suggestions);
+      suggestions = checkConcludingSentences(text, suggestions);
+      
+
+
 
       // suggestions = suggestions.sort((a, b) => (a.index > b.index) ? 1 : -1)
+    
 
       try {
         for (var i = 0; i < suggestions.length; i++) {
@@ -146,7 +148,7 @@ class TextEditor extends React.Component {
           var index = suggestion.index;
           var offset = suggestion.offset;
           var abort = false;
-
+          
           var mistake = text.substring(index, index + offset);
           for (var k = 0; k < globalExceptions.length; k++) {
             if (mistake === globalExceptions[k]) {
@@ -327,6 +329,8 @@ class TextEditor extends React.Component {
       }
 
       //Mistakes
+
+     
       $(".mistake").on("click", function() {
         var comment = $(this).attr("mistake");
 
@@ -404,6 +408,7 @@ class TextEditor extends React.Component {
         $(`#mistake`).css({ opacity: "1" });
       });
     };
+    
   }
 
   state = {
@@ -427,9 +432,12 @@ class TextEditor extends React.Component {
           <div className="editor__paragraph"></div>
         </div>
         <div className="editor__comment" id="mistake"></div>
+        <div className="editor__mistakes"></div>
       </div>
     );
   }
 }
+
+
 
 export default TextEditor;

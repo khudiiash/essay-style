@@ -25,20 +25,24 @@ body {
 .editor {
     background: #fff;
     opacity: 1;
+    
 
     &__center {
         background: #fff;
         display: flex;
         justify-content: center;
     }
+
    
     &__text-area {
-        
+        outline: none;
+        -moz-appearance: none;
+        border: none;
         resize: none;
         background: #fff;
         position: absolute;
         padding: 2em;
-        width: 35%;
+        width: 32%;
         height: 90vh;
         margin: 10px;
         text-indent: 2em;
@@ -48,17 +52,17 @@ body {
         font-family: "Montserrat";
         z-index: 3;
         opacity: 1;
+        border-radius: 5px;
     }
     &__paragraph {
+       
         background: rgb(255, 255, 255);
         position: absolute;
         text-align: left;
         padding: 2em;
-        border: 1px solid rgba(0,0,0,.2);
-        width: 35%;
+        width: 32%;
         height: 90vh;
         margin: 10px;
-        
         text-indent: 2em;
         font-size: 18px;
         font-weight: 500;
@@ -66,7 +70,8 @@ body {
         opacity: 1;
         overflow: scroll;
         text-indent: 2em;
-        box-shadow: 0 0 15px rgba(0,0,0,1)
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.205);
+        border-radius: 5px;
         
     
     }
@@ -85,6 +90,29 @@ body {
         width: 15vw;
         top: 35%;
         left: 72%;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,.205);
+        padding: 10px;
+        opacity: 0;
+        transition: 300ms;
+        background: #2d2d2d;
+        color: white;
+        z-index: 1;
+    
+    }
+    &__mistakes {
+        display: flex;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+        color: #2d2d2d;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        height: auto;
+        width: 15vw;
+        top: 35%;
+        left: 22%;
         border-radius: 10px;
         box-shadow: 0 0 5px rgba(0,0,0,.4);
         padding: 10px;
