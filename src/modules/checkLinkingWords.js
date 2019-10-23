@@ -43,7 +43,7 @@ export default function checkLinkingWords(text, suggestions) {
             ) {
               continue;
             }
-            if (!linkWord.includes("ly")) {
+            if (!linkWord.includes("ly") && !current.includes(indexes[k] + 1)) {
               suggestions.unshift({
                 index: indexes[k] + 1,
                 offset: linkWord.length,

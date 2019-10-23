@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,900&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato:400,500,600,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700&display=swap');
 
 
 $mistake-color: rgb(255, 255, 124);
@@ -8,19 +9,6 @@ $repetition-color: #c9daf8;
 $punctuation-color: #ead1dc;
 
 
-body {
-    font-size: 18px;
-    font-weight: 500;
-    height: 100vh;
-    width: 100vw;
-    font-family: 'Times New Roman', Times, serif, serif;
-    box-sizing: border-box;
-    background: url('https://images.pexels.com/photos/8892/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat;
-    background: url('https://images.pexels.com/photos/355747/pexels-photo-355747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat;
-
-    background-size: cover;
-    overflow: hidden;
-}
 
 .editor {
     background: #fff;
@@ -39,7 +27,7 @@ body {
         -moz-appearance: none;
         border: none;
         resize: none;
-        background: #fff;
+        background: rgba(255, 255, 255, 0.87);
         position: absolute;
         padding: 2em;
         width: 32%;
@@ -48,7 +36,6 @@ body {
         text-indent: 2em;
         font-size: 16px;
         font-weight: 500;
-        font-family: 'Times New Roman', Times, serif, serif;
         font-family: "Montserrat";
         z-index: 3;
         opacity: 1;
@@ -58,6 +45,8 @@ body {
        
         background: rgb(255, 255, 255);
         position: absolute;
+        font-family: "Times New Roman",sans-serif;
+        font-weight:900;
         text-align: left;
         padding: 2em;
         width: 32%;
@@ -73,7 +62,6 @@ body {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.205);
         border-radius: 5px;
         
-    
     }
     &__paragraph::-webkit-scrollbar { width: 0 !important }
     
@@ -128,7 +116,7 @@ body {
     opacity: 1;
     transition: 400ms;
     cursor: pointer;
-    border-radius: 10%;
+    border-radius: 5px;
 
 
 }
@@ -136,7 +124,7 @@ body {
     background: $sentence-color;
     transition: 400ms;
     cursor: pointer;
-    border-radius: 10%;
+    border-radius: 5px;
 
 }
 
@@ -144,13 +132,13 @@ body {
     background: $repetition-color;
     transition: 400ms;
     cursor: pointer;
-    border-radius: 10%;
+    border-radius: 5px;
 }
 .punctuation {
     background: $punctuation-color;
     transition: 400ms;
     cursor: pointer;
-    border-radius: 10%;
+    border-radius: 5px;
 }
 
 

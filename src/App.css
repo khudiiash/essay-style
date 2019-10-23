@@ -2,6 +2,17 @@
   text-align: center;
 }
 
+body {
+  font-size: 18px;
+  font-weight: 500;
+  height: 100vh;
+  width: 100vw;
+  font-family: 'Times New Roman', Times, serif, serif;
+  box-sizing: border-box;
+  background: url('https://images.pexels.com/photos/355747/pexels-photo-355747.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') no-repeat;
+  background-size: 100% 100% 100% 100%;
+  overflow: hidden;
+}
 .App-logo {
   height: 40vmin;
 }

@@ -1,4 +1,5 @@
 let transitions = [
+    "Annually",
     "Nevertheless",
     "However",
     "Nonetheless",

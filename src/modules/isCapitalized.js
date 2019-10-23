@@ -14,6 +14,5 @@ export default function isCapitalized(sentence) {
         notCapital.unshift(word);
       }
     }
-  
     return capital.length > notCapital.length;
   }

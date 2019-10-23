@@ -13,6 +13,7 @@ let wordiness = [
     "it has been found out",
     "it has long been known that",
     "it is a fact that",
+    'it is a clear indication that',
     "It is arguable that",
     "It is unarguable that",
     "it is worth mentioning that",

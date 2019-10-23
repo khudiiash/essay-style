@@ -19,16 +19,29 @@ export default function checkConcludingSentences(text, suggestions) {
         current.push(suggestions[g].index);
       }
       if (
-        (sentence.includes("Also,") ||
-          sentence.includes("Besides,") ||
-          sentence.includes("For Example,") ||
-          sentence.includes("For instance,") ||
-          sentence.includes("Moreover,") ||
-          sentence.includes("There is also") ||
+        (   sentence.includes("Also,") ||
+        sentence.includes("Besides,") ||
+        sentence.includes("For example,") ||
+        sentence.includes("For instance,") ||
+        sentence.includes("Moreover,") || 
+        sentence.includes("It is also") || 
+        sentence.includes("In addition") || 
+        sentence.includes("Furthermore") || 
+        sentence.includes("It is worth mentioning that") || 
+        sentence.includes("Additionally") || 
+        sentence.includes("They also") || 
+        sentence.includes("They have also") || 
+        sentence.includes("He also") || 
+        sentence.includes("He had also") || 
+        sentence.includes("She also") || 
+        sentence.includes("She had also") || 
+        sentence.includes("And") || 
+        sentence.includes("But") ||        
+        sentence.includes("According to") ||        
+        sentence.includes("In the study")  ||
           /[^\s()]+(?=[^()]*\))/.test(sentence) ||
           /\((\d{4})\)/.test(sentence) ||
           /\%/.test(sentence) ||
-          sentence.includes("According to") ||
           sentence.includes("It has been identified that")) &&
         !current.includes(text.indexOf(sentence))
       ) {
