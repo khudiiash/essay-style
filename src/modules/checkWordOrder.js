@@ -3,8 +3,8 @@ const nlp = require('compromise')
 
 export default function checkWordOrder (text,suggestions) {
     let allInfinitives = [...text.matchAll(/\bto\b\s\w+\s\w+/gi)],
-        allAdverbials = [...text.matchAll(/\bit\b\s\w+\s\w+/gi)],
-        allToMatch = allInfinitives.concat(allAdverbials),
+
+
         current = [];
 
     
@@ -12,10 +12,10 @@ export default function checkWordOrder (text,suggestions) {
         current.push(suggestions[g].index);
     }
 
-    for ( var i = 0; i < allToMatch.length; i++ ) {
-        let phrase = allToMatch[i]
+    for ( var i = 0; i < allInfinitives.length; i++ ) {
+        let phrase = allInfinitives[i]
         let {list:[{terms}]} = nlp(phrase[0])       
-        if ((terms[0]._text === 'to' || terms[0]._text === 'it' || terms[0]._text === 'To' || terms[0]._text === 'It') && Object.keys(terms[1].tags)[0]==='Adverb' && Object.keys(terms[2].tags).includes('Verb')) {
+        if (Object.keys(terms[1].tags)[0]==='Adverb' && Object.keys(terms[2].tags).includes('Verb')) {
             
             let wrongInfinitive = `${terms[0]._text} ${terms[1]._text} ${terms[2]._text}`
             let indices = getIndicesOf(text,wrongInfinitive)

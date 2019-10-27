@@ -8,7 +8,7 @@ export default function isCapitalized(sentence) {
   
     for (var i = 0; i < words.length; i++) {
       var word = words[i];
-      if (word.charAt(0) == word.charAt(0).toUpperCase()) {
+      if (word.charAt(0) === word.charAt(0).toUpperCase()) {
         capital.unshift(word);
       } else {
         notCapital.unshift(word);

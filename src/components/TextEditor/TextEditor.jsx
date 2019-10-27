@@ -1,7 +1,10 @@
 /* eslint-disable no-extend-native */
+/* eslint-disable no-useless-escape */
+/* eslint-disable-next-line */
 import React from "react";
 import $ from "jquery";
 import "./TextEditor.scss";
+import Table from '../Table/Table'
 
 // Local modules
 import checkAmerican from "../../modules/checkAmerican";
@@ -55,6 +58,14 @@ function getPos(str, subStr, i) {
 class TextEditor extends React.Component {
   constructor() {
     super();
+    this.state = {
+      number: 0,
+      structure: 0,
+      style: 0,
+      formatting: 0,
+      grammar: 0,
+      
+    }
     this.checkForMistakes = (array, text, suggestions, comment) => {
       for (var i = 0; i < array.length; i++) {
         if (text.includes(array[i])) {
@@ -94,7 +105,7 @@ class TextEditor extends React.Component {
           wordiness,
           text,
           suggestions,
-          "This phrase is redundant. Consider changing or removing"
+          "This phrase might be wordy. Consider changing or removing"
         );
         suggestions = this.checkForMistakes(
           informal,
@@ -106,7 +117,7 @@ class TextEditor extends React.Component {
           phrasalVerbs,
           text,
           suggestions,
-          "Phrasal verb. Consider replacing"
+          "Phrasal verb. Consider replacing with a one-word equivalent"
         );
         suggestions = this.checkForMistakes(
           weakWords,
@@ -118,7 +129,7 @@ class TextEditor extends React.Component {
           pronouns,
           text,
           suggestions,
-          "In academic writing, do not use 1st and 2nd person pronouns. To be objective, prefer the 3rd person perspective (he, she, it, they)"
+          "Do not use 1st and 2nd person pronouns. Prefer the 3rd person perspective (he, she, it, they)"
         );
         suggestions = this.checkForMistakes(
           shortForms,
@@ -149,19 +160,28 @@ class TextEditor extends React.Component {
       suggestions = checkConcludingSentences(text, suggestions);
 
       
+      
+  
 
      
 
       // suggestions = suggestions.sort((a, b) => (a.index > b.index) ? 1 : -1)
     
+      var style=0,structure=0,formatting=0,grammar=0,number=0;
 
       try {
         for (var i = 0; i < suggestions.length; i++) {
+          
+          
+
           let suggestion = suggestions[i];
           var index = suggestion.index;
           var offset = suggestion.offset;
           var abort = false;
-          
+          if (suggestion.reason !== 'Repetition') {
+            number++;
+            this.setState({number: number});
+          } 
           var mistake = text.substring(index, index + offset);
           for (var k = 0; k < globalExceptions.length; k++) {
             if (mistake === globalExceptions[k]) {
@@ -170,7 +190,7 @@ class TextEditor extends React.Component {
           }
           if (mistake === "In conclusion") {
             suggestion.reason =
-              'Avoid phrases like "in conclusion," "to conclude," "in summary," and "to sum up." These phrases can be useful in oral presentations. However, readers can see, by the tell-tale compression of the pages, when an essay is about to end.';
+              'Avoid phrases like "in conclusion," "to conclude," "in summary," and "to sum up." These phrases can be useful in oral presentations. However, readers can see when an essay is about to end.';
           }
           
           for (let word = 0; word < transitions.length; word++) {
@@ -180,20 +200,46 @@ class TextEditor extends React.Component {
             ) {
               abort = true;
             }
-            if (mistake === "It is" || mistake === "it is") {
-              abort = true;
-            }
-            if (
-              suggestion.reason === "sentence should be preceded by a space"
-            ) {
-              abort = true;
-            }
+          
           }
-        
+          
          var mistakeClass = suggestion.type
+          
+         if (suggestion.reason.includes('Phrasal verb') ||
+             suggestion.reason.includes('passive voice') ||
+             suggestion.reason.includes('vague') ||
+             suggestion.reason.includes('Weak word') ||
+             suggestion.reason.includes('Informal') ||      
+             suggestion.reason.includes('pronouns') ||      
+             suggestion.reason.includes('contraction') ||      
+              mistakeClass === 'replace'      
+         ) {style+=1;this.setState({style: style})}
+        
+         else if (suggestion.reason.includes('Concluding') ||
+            suggestion.reason.includes('statement') ||
+            suggestion.reason.includes('new information')
+        ) {structure+=1;this.setState({structure: structure})}
+            
+        else if (suggestion.reason.includes('citation') || 
+            suggestion.reason.includes('Outdated') || 
+            suggestion.reason.includes('APA') ||
+            suggestion.reason.includes('MLA') ||
+            suggestion.reason.includes('journal') ||
+            suggestion.reason.includes('title') ||
+            suggestion.reason.includes('short words in a heading')
+
+            ) 
+            {formatting+=1;this.setState({formatting: formatting})}
+        
+          else if (suggestion.reason.includes('word order') ||
+              suggestion.reason.includes('comma') ||
+              suggestion.reason.includes('wordy') ||
+              suggestion.reason.includes('preposition')
+              ) 
+              {grammar+=1;this.setState({grammar: grammar})}
 
 
-          if (
+        if (
             (isLetter(text[index - 1]) || isLetter(text[index + offset])) &&
             mistakeClass !== "punctuation" && mistakeClass !== "informal" && mistakeClass !== "sentence"
           ) {
@@ -329,15 +375,14 @@ class TextEditor extends React.Component {
       } catch (e) {
         console.log(e);
       }
-
+      
       //Mistakes
-
-     
+      $(".clear__container").css({opacity: '1'})
       $(".mistake").on("click", function() {
         var comment = $(this).attr("mistake");
 
         comment = checkComment(comment);
-
+        
         $(`#mistake`).text(comment);
         $(this).css({ background: "rgb(255, 155, 124)" });
 
@@ -483,6 +528,13 @@ class TextEditor extends React.Component {
         </div>
         <div className="editor__comment" id="mistake"></div>
         <div className="editor__mistakes"></div>
+        <Table 
+          number={this.state.number}
+          style = {this.state.style}
+          structure = {this.state.structure}
+          formatting={this.state.formatting}
+          grammar={this.state.grammar}        
+        />
       </div>
     );
   }

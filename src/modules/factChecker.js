@@ -1,3 +1,6 @@
+/* eslint-disable no-useless-escape */
+
+
 import prepositions from "../libraries/prepositions";
 import isLetter from '../modules/isLetter'
 import findInnerIndex from '../modules/findInnerIndex'
@@ -81,13 +84,21 @@ export default function factChecker(text, suggestions) {
             sentence.includes("It has been identified that")) &&
           !current.includes(text.indexOf(sentence))
         ) {
-          suggestions.unshift({
-            index: text.indexOf(sentence),
-            offset: sentence.length,
-            reason:
-              "Any facts, statistics, or other specific information require citations",
-              type: 'sentence'
-          });
+          if (!text.includes("marketing strategy") &&
+          !text.includes("profit margin") &&
+          !text.includes("target customer") &&
+          !text.includes("marketing strategy") &&
+          !text.includes("branding")) {
+            suggestions.unshift({
+              index: text.indexOf(sentence),
+              offset: sentence.length,
+              reason:
+                "Any facts, statistics, or other specific information require citations",
+                type: 'sentence'
+            });
+          }
+
+          
         }
       }
     }

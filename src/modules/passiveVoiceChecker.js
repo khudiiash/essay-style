@@ -38,7 +38,7 @@ export default function passiveVoiceChecker(text, suggestions) {
   matches.push([...text.matchAll(wereEd)]);
   var wasEd = /\bwas\b\s\w*ed\b/g;
   matches.push([...text.matchAll(wasEd)]);
-  var isEd = /\b(\w*is\w*)\b\s\w*ed\b/g;
+  var isEd = /\bis\b\s\w*ed\b/g;
   matches.push([...text.matchAll(isEd)]);
   var beingEd = /\bbeing\b\s\w*ed\b/g;
   matches.push([...text.matchAll(beingEd)]);

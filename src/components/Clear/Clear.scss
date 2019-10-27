@@ -8,6 +8,8 @@
         width: 50%;
         margin-left: 49%;
         margin-top: 30px;
+        opacity: 0;
+        transition: 400ms ease;
     }
     &__icon {
         height: 45px;
@@ -33,7 +35,7 @@
         font-family: "Montserrat";
         font-weight: 600;
         letter-spacing: 2px;
-        background: -webkit-linear-gradient(rgb(85, 0, 0), rgb(158, 158, 158));
+        background: -webkit-linear-gradient(rgb(0, 0, 0), rgb(158, 158, 158));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         position: relative;

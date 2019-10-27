@@ -140,7 +140,7 @@ export default function checkReferences(text, suggestions) {
                       index: brackets[y].index,
                       offset: brackets[y][0].length,
                       reason: "Incorrect citation formatting",
-                      type: 'sentence'
+                      type: 'mistake'
                     });
                   }
                 }
@@ -198,7 +198,7 @@ export default function checkReferences(text, suggestions) {
                     index: brackets[o].index,
                     offset: brackets[o][0].length,
                     reason: "Incorrect citation formatting",
-                    type: 'sentence'
+                    type: 'mistake'
                   });
                 }
               }

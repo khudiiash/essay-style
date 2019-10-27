@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import { TextEditor, Clear } from './components'
+import { TextEditor, Clear} from './components'
 
 
 function App() {

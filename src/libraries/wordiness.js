@@ -50,7 +50,6 @@ let wordiness = [
     "in all cases",
     "in many cases",
     "in most cases",
-    "in order to",
     "in some cases",
     "in conclusion",
     "In the conclusion",
@@ -96,7 +95,6 @@ let wordiness = [
     'have been able to',
     'considered as being',
     'considered to be',
-    
   ]
 
 var arrayLength = wordiness.length

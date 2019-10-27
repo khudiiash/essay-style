@@ -11,6 +11,8 @@ class Clear extends React.Component {
             $("#text-area").val('');
             $("#text-area").css({ zIndex: "3" , opacity: "1"});
             $("#mistake").css({ opacity: "0"});
+            $('.table').css('opacity','0')
+            
            
         }
     }

@@ -1,3 +1,5 @@
+/* eslint-disable no-useless-escape */
+
 import getLastSentences from './getLastSentences'
 import checkThesisStatement from './checkThesisStatement'
 import isCitationInSentence from './isCitationInSentence'
