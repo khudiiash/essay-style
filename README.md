@@ -12,6 +12,7 @@ You can paste an essay to the textarea and it will highlight all possible stylis
 - Citation formatting (APA, MLA).
 - References formatting (APA, MLA).
 - Weak words (important, good, bad, etc).
+- Excessively complex words.
 - Wordiness.
 - Concluding sentences.
 - Thesis statements.
