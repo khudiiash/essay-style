@@ -47,7 +47,8 @@ export default function checkLinkingWords(text, suggestions) {
               suggestions.unshift({
                 index: indexes[k] + 1,
                 offset: linkWord.length,
-                reason: "Linking words must be separated by commas"
+                reason: "Linking words must be separated by commas",
+                type: 'punctuation'
               });
             }
           }

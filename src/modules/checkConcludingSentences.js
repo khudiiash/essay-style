@@ -11,7 +11,8 @@ export default function checkConcludingSentences(text, suggestions) {
         suggestions.unshift({
           index: text.indexOf(sentence),
           offset: sentence.length,
-          reason: "Concluding sentence must not be a citation"
+          reason: "Concluding sentence must not be a citation",
+          type: 'sentence'
         });
       }
       var current = [];
@@ -21,16 +22,24 @@ export default function checkConcludingSentences(text, suggestions) {
       if (
         (   sentence.includes("Also,") ||
         sentence.includes("Besides,") ||
-        sentence.includes("For example,") ||
-        sentence.includes("For instance,") ||
+        sentence.includes("For example") ||
+        sentence.includes("for example") ||
+        sentence.includes("For instance") ||
+        sentence.includes("for instance") ||
         sentence.includes("Moreover,") || 
         sentence.includes("It is also") || 
+        sentence.includes("It has also") || 
+        sentence.includes("It was also") || 
+        sentence.includes("Another") || 
         sentence.includes("In addition") || 
         sentence.includes("Furthermore") || 
         sentence.includes("It is worth mentioning that") || 
         sentence.includes("Additionally") || 
         sentence.includes("They also") || 
         sentence.includes("They have also") || 
+        sentence.includes("There was also") || 
+        sentence.includes("There were also") || 
+        sentence.includes("There is also") || 
         sentence.includes("He also") || 
         sentence.includes("He had also") || 
         sentence.includes("She also") || 
@@ -49,7 +58,8 @@ export default function checkConcludingSentences(text, suggestions) {
           index: text.indexOf(sentence),
           offset: sentence.length,
           reason:
-            "Concluding sentence must sum up the paragraph, so do not conclude paragraphs with examples, evidence, or new facts."
+            "Concluding sentence must sum up the paragraph, so do not conclude paragraphs with examples, evidence, or new facts.",
+            type: 'sentence'
         });
       }
     }

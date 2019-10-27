@@ -19,7 +19,8 @@ export default function checkThesisStatement(text, thesisStatement, suggestions)
             index: index,
             offset: thesisStatement.length,
             reason:
-              "This is a purpose statement. Remember that you have to use a thesis statement"
+              "This is a purpose statement. Remember that you have to use a thesis statement",
+            type: 'sentence'
           });
           return suggestions;
         }
@@ -52,7 +53,8 @@ export default function checkThesisStatement(text, thesisStatement, suggestions)
           index: index,
           offset: thesisStatement.length,
           reason:
-            "Incorrect thesis statement. You must have presented a central claim on the topic"
+            "Incorrect thesis statement. You must have presented a central claim on the topic",
+          type: 'sentence'
         });
       }
     }

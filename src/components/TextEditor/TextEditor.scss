@@ -7,8 +7,15 @@ $mistake-color: rgb(255, 255, 124);
 $sentence-color: #fce5cd;
 $repetition-color: #c9daf8;
 $punctuation-color: #ead1dc;
+$informal-color: #f1c232;
+$replace-color: #b6d7a8;
 
-
+@mixin mistakeSet ($color) {
+    background: $color;
+    transition: 400ms;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
 .editor {
     background: #fff;
@@ -70,16 +77,18 @@ $punctuation-color: #ead1dc;
         font-family: "Open Sans", sans-serif;
         font-weight: 500;
         font-size: 15px;
-        color: #2d2d2d;
         justify-content: center;
         align-items: center;
         position: absolute;
         height: auto;
-        width: 15vw;
+        min-height: 5vh;
+        width: auto;
+        min-width: 10vw;
+        max-width: 15vw;
         top: 35%;
         left: 72%;
         border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,0,0,.205);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.185);
         padding: 10px;
         opacity: 0;
         transition: 300ms;
@@ -112,33 +121,23 @@ $punctuation-color: #ead1dc;
     }
 }
 .mistake {
-    background: $mistake-color;
     opacity: 1;
-    transition: 400ms;
-    cursor: pointer;
-    border-radius: 5px;
-
-
+    @include mistakeSet($mistake-color);
 }
 .sentence {
-    background: $sentence-color;
-    transition: 400ms;
-    cursor: pointer;
-    border-radius: 5px;
-
+    @include mistakeSet($sentence-color);
 }
-
 .repetition {
-    background: $repetition-color;
-    transition: 400ms;
-    cursor: pointer;
-    border-radius: 5px;
+    @include mistakeSet( $repetition-color);
 }
 .punctuation {
-    background: $punctuation-color;
-    transition: 400ms;
-    cursor: pointer;
-    border-radius: 5px;
+   @include mistakeSet($punctuation-color);
+}
+.informal {
+    @include mistakeSet($informal-color)
+}
+.replace {
+    @include mistakeSet($replace-color)
 }
 
 
@@ -151,6 +150,8 @@ $punctuation-color: #ead1dc;
         }
         &__comment {
             width: 50%;
+            max-width: none;
+            min-width: none;
             left: 22.5%;
             top: 85%;
         }

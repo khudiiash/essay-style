@@ -47,7 +47,8 @@ export default function factChecker(text, suggestions) {
             index: text.indexOf(paragraphs[0]) + indices[i].index,
             offset: indices[i][0].length,
             reason:
-              "Conclusion must not contain any new information, especially citations"
+              "Conclusion must not contain any new information, especially citations",
+              type: 'mistake'
           });
   
           for (var t = 1; t < suggestions.length; t++) {
@@ -84,7 +85,8 @@ export default function factChecker(text, suggestions) {
             index: text.indexOf(sentence),
             offset: sentence.length,
             reason:
-              "Any facts, statistics, or other specific information require citations"
+              "Any facts, statistics, or other specific information require citations",
+              type: 'sentence'
           });
         }
       }
@@ -107,7 +109,8 @@ export default function factChecker(text, suggestions) {
                 index: index,
                 offset: words[x].length,
                 reason:
-                  "Do not capitalize prepositions, conjunctions, and other short words in a heading"
+                  "Do not capitalize prepositions, conjunctions, and other short words in a heading",
+                type: 'mistake'
               });
             }
           }

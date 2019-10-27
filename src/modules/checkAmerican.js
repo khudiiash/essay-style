@@ -21,7 +21,8 @@ export default function checkAmerican(text, suggestions) {
             index: indices[c],
             offset: word.length,
             reason:
-              'Write "the US" or "the United States of America", but never "America" alone'
+              'Write "the US" or "the United States of America", but never "America" alone',
+            type: 'mistake'
           });
         }
       }

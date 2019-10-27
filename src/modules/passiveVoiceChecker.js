@@ -31,15 +31,14 @@ export default function passiveVoiceChecker(text, suggestions) {
     }
   }
 
-  var edBy = /\w*ed\b\s\bby/g;
-  matches.push([...text.matchAll(edBy)]);
+
   var areEd = /\bare\b\s\w*ed\b/g;
   matches.push([...text.matchAll(areEd)]);
   var wereEd = /\bwere\b\s\w*ed\b/g;
   matches.push([...text.matchAll(wereEd)]);
-  var wasEd = /\b\was\b\s\w*ed\b/g;
+  var wasEd = /\bwas\b\s\w*ed\b/g;
   matches.push([...text.matchAll(wasEd)]);
-  var isEd = /\bis\b\s\w*ed\b/g;
+  var isEd = /\b(\w*is\w*)\b\s\w*ed\b/g;
   matches.push([...text.matchAll(isEd)]);
   var beingEd = /\bbeing\b\s\w*ed\b/g;
   matches.push([...text.matchAll(beingEd)]);
@@ -59,7 +58,8 @@ export default function passiveVoiceChecker(text, suggestions) {
           suggestions.unshift({
             index: matches[p][u].index,
             offset: matches[p][u][0].length,
-            reason: `"${matches[p][u][0]}" can be passive voice`
+            reason: `"${matches[p][u][0]}" can be passive voice`,
+            type: 'mistake'
           });
           
         }

@@ -16,7 +16,9 @@ import getIndicesOf from "../../modules/getIndicesOf";
 import isLetter from "../../modules/isLetter";
 import passiveVoiceChecker from "../../modules/passiveVoiceChecker";
 import punctuationChecker from "../../modules/punctuationChecker";
-
+import checkReplace from "../../modules/checkReplace";
+import checkPrepositional from "../../modules/checkPrepositional";
+import checkWordOrder from "../../modules/checkWordOrder";
 // Local Libs
 import phrasalVerbs from "../../libraries/phrasal-verbs";
 import shortForms from "../../libraries/short-forms";
@@ -27,6 +29,8 @@ import transitions from "../../libraries/transitions";
 import vague from "../../libraries/vague";
 import informal from "../../libraries/informal";
 
+
+
 String.prototype.replaceAt = function(index, replacement) {
   return (
     this.substr(0, index) +
@@ -34,12 +38,15 @@ String.prototype.replaceAt = function(index, replacement) {
     this.substr(index + replacement.length - 1)
   );
 };
-
-const globalExceptions = ["understand", "understood", "many", "experience"];
-
 String.prototype.capitalize = function() {
   return this[0].toUpperCase() + this.substring(1, this.length);
 };
+
+
+
+
+const globalExceptions = ["understand", "understood", "many", "experience"];
+
 
 function getPos(str, subStr, i) {
   return str.split(subStr, i).join(subStr).length;
@@ -64,7 +71,8 @@ class TextEditor extends React.Component {
                 var newMistake = {
                   index: indices[k],
                   offset: array[i].length,
-                  reason: comment
+                  reason: comment,
+                  type: 'mistake'
                 };
                 suggestions.unshift(newMistake);
               }
@@ -95,28 +103,28 @@ class TextEditor extends React.Component {
           "Informal phrase. Do not use idiomatic expressions and metaphors"
         );
         suggestions = this.checkForMistakes(
-          weakWords,
-          text,
-          suggestions,
-          "Weak word. Consider replacing"
-        );
-        suggestions = this.checkForMistakes(
           phrasalVerbs,
           text,
           suggestions,
           "Phrasal verb. Consider replacing"
         );
         suggestions = this.checkForMistakes(
+          weakWords,
+          text,
+          suggestions,
+          "Weak word or phrase. Consider replacing"
+        );
+        suggestions = this.checkForMistakes(
           pronouns,
           text,
           suggestions,
-          "Do not use pronouns that associate with the reader"
+          "In academic writing, do not use 1st and 2nd person pronouns. To be objective, prefer the 3rd person perspective (he, she, it, they)"
         );
         suggestions = this.checkForMistakes(
           shortForms,
           text,
           suggestions,
-          "Do not use short forms in academic writing"
+          "Do not use contractions in academic writing"
         );
         suggestions = this.checkForMistakes(
           vague,
@@ -126,6 +134,7 @@ class TextEditor extends React.Component {
         );
       }
       //checking
+      
       suggestions = punctuationChecker(text, suggestions);
       suggestions = checkAmerican(text, suggestions);
       suggestions = checkOutdated(text, suggestions);
@@ -134,10 +143,14 @@ class TextEditor extends React.Component {
       suggestions = passiveVoiceChecker(text, suggestions);
       suggestions = factChecker(text, suggestions);
       suggestions = checkReferences(text, suggestions);
+      suggestions = checkReplace(text,suggestions);
+      suggestions = checkWordOrder(text,suggestions)
+      suggestions = checkPrepositional(text,suggestions);
       suggestions = checkConcludingSentences(text, suggestions);
+
       
 
-
+     
 
       // suggestions = suggestions.sort((a, b) => (a.index > b.index) ? 1 : -1)
     
@@ -155,12 +168,11 @@ class TextEditor extends React.Component {
               abort = true;
             }
           }
-
           if (mistake === "In conclusion") {
             suggestion.reason =
               'Avoid phrases like "in conclusion," "to conclude," "in summary," and "to sum up." These phrases can be useful in oral presentations. However, readers can see, by the tell-tale compression of the pages, when an essay is about to end.';
           }
-
+          
           for (let word = 0; word < transitions.length; word++) {
             if (
               mistake === transitions[word] &&
@@ -177,31 +189,21 @@ class TextEditor extends React.Component {
               abort = true;
             }
           }
-          var mistakeClass = "mistake";
-          if (
-            suggestion.reason.includes("sentence") ||
-            suggestion.reason.includes("thesis") ||
-            suggestion.reason.includes("APA") ||
-            suggestion.reason.includes("MLA") ||
-            suggestion.reason.includes("Book titles")
-          ) {
-            mistakeClass = "sentence";
-            mistake = text.substring(index, index + offset);
-          }
-          if (suggestion.reason.includes("comma")) {
-            mistakeClass = "punctuation";
-          }
+        
+         var mistakeClass = suggestion.type
+
+
           if (
             (isLetter(text[index - 1]) || isLetter(text[index + offset])) &&
-            mistakeClass !== "punctuation"
+            mistakeClass !== "punctuation" && mistakeClass !== "informal" && mistakeClass !== "sentence"
           ) {
             abort = true;
           }
-
+         
           if (abort) {
             continue;
           }
-
+         
           var start = index;
           var end = start + offset;
 
@@ -211,13 +213,14 @@ class TextEditor extends React.Component {
             html = $(".editor__paragraph").html();
 
             var startAfter = html.substring(start, html.length - 1);
-
-            if (suggestion.reason === "Repetition") {
+           
+            if (suggestion.type === "repetition") {
               mistakeClass = "repetition";
               var substringBetweenWords = startAfter.substring(
                 getPos(startAfter, mistake, 1),
                 getPos(startAfter, mistake, 2)
               );
+              
               if (
                 !isLetter(startAfter[startAfter.indexOf(mistake) - 1]) &&
                 !isLetter(
@@ -237,7 +240,7 @@ class TextEditor extends React.Component {
                 index - 5,
                 index + mistake.length + 5
               );
-
+             
               if (
                 !(
                   largerSubstring.includes("Journal") ||
@@ -253,7 +256,6 @@ class TextEditor extends React.Component {
                       html.indexOf(startAfter) + startAfter.indexOf(mistake);
                   } else {
                     if (mistake.includes("&")) {
-                      console.log(mistake);
                       mistake = mistake.replace(/\&/, "&amp;");
 
                       start = html.lastIndexOf(
@@ -288,7 +290,7 @@ class TextEditor extends React.Component {
                 }
               }
             }
-
+            
             if (
               suggestion.reason.includes("facts, statistics") ||
               suggestion.reason.includes("journal titles")
@@ -345,6 +347,49 @@ class TextEditor extends React.Component {
         $(".sentence").css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
         $(".punctuation").css({ background: "#ead1dc" });
+        $(".replace").css({ background: "#b6d7a8" });
+        $(".informal").css({background:"#f1c232"})
+        $(`#mistake`).css({ opacity: "1" });
+      });
+      // Informal
+      $(".informal").on("click", function() {
+        var comment = $(this).attr("informal");
+
+        comment = checkComment(comment);
+
+        $(`#mistake`).text(comment);
+        
+        $(this).css({ background: "rgb(255, 155, 124)" });
+
+        $(".informal")
+          .not(this)
+          .css({ background: "#f1c232" });
+        $(".mistake").css({ background: "rgb(255, 255, 124)" });
+        $(".sentence").css({ background: "#fce5cd" });
+        $(".repetition").css({ background: "#c9daf8" });
+        $(".replace").css({ background: "#b6d7a8" });
+        $(".punctuation").css({ background: "#ead1dc" });
+        $(`#mistake`).css({ opacity: "1" });
+      });
+
+       // Complex
+       $(".replace").on("click", function() {
+        var comment = $(this).attr("replace");
+
+        comment = checkComment(comment);
+
+        $(`#mistake`).text(comment);
+        
+        $(this).css({ background: "rgb(255, 155, 124)" });
+
+        $(".replace")
+          .not(this)
+          .css({ background: "#b6d7a8" });
+        $(".mistake").css({ background: "rgb(255, 255, 124)" });
+        $(".sentence").css({ background: "#fce5cd" });
+        $(".repetition").css({ background: "#c9daf8" });
+        $(".informal").css({background:"#f1c232"});
+        $(".punctuation").css({ background: "#ead1dc" });
         $(`#mistake`).css({ opacity: "1" });
       });
 
@@ -366,7 +411,9 @@ class TextEditor extends React.Component {
         $(".repetition")
           .not(this)
           .css({ background: "#c9daf8" });
+        $(".replace").css({ background: "#b6d7a8" });
         $(".punctuation").css({ background: "#ead1dc" });
+        $(".informal").css({background:"#f1c232"})
         $(`#mistake`).css({ opacity: "1" });
       });
 
@@ -377,7 +424,6 @@ class TextEditor extends React.Component {
         comment = checkComment(comment);
 
         $(`#mistake`).text(comment);
-
         $(this).css({ background: "rgb(255, 155, 124)" });
 
         $(".mistake").css({ background: "rgb(255, 255, 124)", color: "#000" });
@@ -386,6 +432,8 @@ class TextEditor extends React.Component {
           .css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
         $(".punctuation").css({ background: "#ead1dc" });
+        $(".replace").css({ background: "#b6d7a8" });
+        $(".informal").css({background:"#f1c232"})
         $(`#mistake`).css({ opacity: "1" });
       });
 
@@ -402,6 +450,8 @@ class TextEditor extends React.Component {
         });
         $(".sentence").css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
+        $(".replace").css({ background: "#b6d7a8" });
+        $(".informal").css({background:"#f1c232"});
         $(".punctuation")
           .not(this)
           .css({ background: "#ead1dc" });

@@ -1,7 +1,7 @@
 
 import findInnerIndex from './findInnerIndex'
 import transitions from '../libraries/transitions'
-const punctuationMistakes = [", that", ", because"];
+const punctuationMistakes = [", that", ", because",", then"];
 
 export default function punctuationChecker(text, suggestions) {
     if (text.includes("References")) {
@@ -25,12 +25,15 @@ export default function punctuationChecker(text, suggestions) {
       for (var p = 0; p < punctuationMistakes.length; p++) {
         var miscoma = punctuationMistakes[p];
         if (sentence.includes(miscoma)) {
+         
           var pIndex = findInnerIndex(text, sentence, miscoma);
+          
           if (!current.includes(pIndex)) {
             suggestions.unshift({
               index: pIndex,
               offset: miscoma.length,
-              reason: "There must be no comma"
+              reason: "There must be no comma",
+              type: 'punctuation'
             });
           }
         }
@@ -48,7 +51,8 @@ export default function punctuationChecker(text, suggestions) {
                 transitions[g]
               }, ${sentence.split(transitions[g] + " ")[1].split(" ")[0] +
                 " " +
-                sentence.split(transitions[g] + " ")[1].split(" ")[1]}...`
+                sentence.split(transitions[g] + " ")[1].split(" ")[1]}...`,
+                type: 'punctuation'
             });
             continue;
           }

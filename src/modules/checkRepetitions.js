@@ -47,7 +47,8 @@ export default function checkRepetitions(text, suggestions) {
         suggestions.unshift({
           index: firstQuoteIndex,
           offset: offset,
-          reason: "Book titles must be italicized without quotation marks"
+          reason: "Book titles must be italicized without quotation marks",
+          type: 'mistake'
         });
       }
   
@@ -66,7 +67,8 @@ export default function checkRepetitions(text, suggestions) {
         suggestions.unshift({
           index: firstQuoteIndex,
           offset: offset,
-          reason: "Movie titles must be italicized without quotation marks"
+          reason: "Movie titles must be italicized without quotation marks",
+          type: 'mistake'
         });
       }
   
@@ -100,7 +102,8 @@ export default function checkRepetitions(text, suggestions) {
                 suggestions.unshift({
                   index: indices[j],
                   offset: word.length,
-                  reason: "Repetition"
+                  reason: "Repetition",
+                  type: 'repetition'
                 });
             }
           }

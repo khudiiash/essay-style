@@ -58,7 +58,8 @@ export default function checkReferences(text, suggestions) {
               suggestions.unshift({
                 index: text.lastIndexOf(referenceTitle),
                 offset: referenceTitle.length,
-                reason: "In APA, capitalize only initial words and proper names"
+                reason: "In APA, capitalize only initial words and proper names",
+                type: 'sentence'
               });
             }
             var splitReference = reference.split(". ");
@@ -88,7 +89,8 @@ export default function checkReferences(text, suggestions) {
                   index: text.lastIndexOf(referenceJournal),
                   offset: referenceJournal.length,
                   reason:
-                    "In APA, journal articles require doi identifier at the end of the reference (eg: doi:10.1000/182)"
+                    "In APA, journal articles require doi identifier at the end of the reference (eg: doi:10.1000/182)",
+                    type: 'sentence'
                 });
               }
             }
@@ -112,7 +114,8 @@ export default function checkReferences(text, suggestions) {
               suggestions.unshift({
                 index: text.lastIndexOf(journalTitle),
                 offset: journalTitle.length,
-                reason: `Capitalize all major words in journal titles: "${capitalTitle}"`
+                reason: `Capitalize all major words in journal titles: "${capitalTitle}"`,
+                type: 'sentence'
               });
             }
             if (countBrackets(text) > 0) {
@@ -136,7 +139,8 @@ export default function checkReferences(text, suggestions) {
                     suggestions.unshift({
                       index: brackets[y].index,
                       offset: brackets[y][0].length,
-                      reason: "Incorrect citation formatting"
+                      reason: "Incorrect citation formatting",
+                      type: 'sentence'
                     });
                   }
                 }
@@ -162,14 +166,15 @@ export default function checkReferences(text, suggestions) {
                   .substring(text.lastIndexOf(reference), text.length - 1)
                   .indexOf("http"),
               reason:
-                'In MLA, do not include http// or https// protocols. Begin with "www..."'
+                'In MLA, do not include http// or https// protocols. Begin with "www..."',
             });
           }
           if (!isCapitalized(referenceTitle)) {
             suggestions.unshift({
               index: text.lastIndexOf(referenceTitle),
               offset: referenceTitle.length,
-              reason: "In MLA, capitalize all major words"
+              reason: "In MLA, capitalize all major words in the title",
+              type: 'sentence'
             });
           }
           if (countBrackets(text) > 0) {
@@ -192,7 +197,8 @@ export default function checkReferences(text, suggestions) {
                   suggestions.unshift({
                     index: brackets[o].index,
                     offset: brackets[o][0].length,
-                    reason: "Incorrect citation formatting"
+                    reason: "Incorrect citation formatting",
+                    type: 'sentence'
                   });
                 }
               }
