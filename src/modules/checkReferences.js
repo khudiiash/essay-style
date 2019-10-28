@@ -15,10 +15,25 @@ export default function checkReferences(text, suggestions) {
     } else if (text.includes("Reference")) {
       referencePage = text.split("Reference")[1];
       style = "APA";
+    } else if (text.includes("REFERENCES")) {
+        referencePage = text.split("Reference")[1];
+        style = "APA";
     } else if (text.includes("Work Cited")) {
       referencePage = text.split("Work Cited")[1];
       style = "MLA";
     } else if (text.includes("Works Cited")) {
+      referencePage = text.split("Works Cited")[1];
+      style = "MLA";
+    }else if (text.includes("Works cited")) {
+      referencePage = text.split("Works Cited")[1];
+      style = "MLA";
+    }else if (text.includes("Works cited")) {
+      referencePage = text.split("Works Cited")[1];
+      style = "MLA";
+    }else if (text.includes("Work cited")) {
+      referencePage = text.split("Works Cited")[1];
+      style = "MLA";
+    }else if (text.includes("Work cited")) {
       referencePage = text.split("Works Cited")[1];
       style = "MLA";
     }

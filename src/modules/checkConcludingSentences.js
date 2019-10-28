@@ -3,8 +3,10 @@
 import getLastSentences from './getLastSentences'
 import checkThesisStatement from './checkThesisStatement'
 import isCitationInSentence from './isCitationInSentence'
+import withoutReferences from './withoutReferences'
 
 export default function checkConcludingSentences(text, suggestions) {
+    text = withoutReferences(text)
     let concludingSentences = getLastSentences(text);
     suggestions = checkThesisStatement(text, concludingSentences[0], suggestions);
     for (var i = 1; i < concludingSentences.length; i++) {

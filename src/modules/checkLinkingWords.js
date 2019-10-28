@@ -1,5 +1,6 @@
 import getIndicesOf from './getIndicesOf'
 import transitions from '../libraries/transitions'
+import withoutReferences from './withoutReferences'
 
 const linkingWords = [];
 transitions.forEach(function(word) {
@@ -11,6 +12,8 @@ transitions.forEach(function(word) {
 });
 
 export default function checkLinkingWords(text, suggestions) {
+    text = withoutReferences(text)
+    
     var exceptions = ["further", "often"];
   
     for (var i = 0; i < linkingWords.length; i++) {

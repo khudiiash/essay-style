@@ -1,7 +1,8 @@
 import getIndicesOf from './getIndicesOf'
+import withoutReferences from './withoutReferences';
 
 export default function checkAmerican(text, suggestions) {
-
+  text = withoutReferences(text)
   var word = "America ";
   if (text.includes(word)) {
     let indices = getIndicesOf(text, word);

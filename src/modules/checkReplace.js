@@ -1,7 +1,9 @@
 import replace from '../libraries/replace'
 import getIndicesOf from './getIndicesOf'
+import withoutReferences from './withoutReferences';
 
 export default function checkReplace(text, suggestions) {
+    text = withoutReferences(text)
     for (var p = 0; p < replace.length; p++) {
         let pair = replace[p];
 

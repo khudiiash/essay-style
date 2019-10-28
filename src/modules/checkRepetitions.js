@@ -1,10 +1,12 @@
 import getIndicesOf from './getIndicesOf'
 import prepositions from '../libraries/prepositions';
+import withoutReferences from '../modules/withoutReferences';
 
 const conjunctions = ["and", "but", "for", "norm", "of", "so"];
 
 
 export default function checkRepetitions(text, suggestions) {
+  text = withoutReferences(text)
     const exceptions = [
       "this",
       "that",

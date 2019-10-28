@@ -5,13 +5,12 @@
     width:16vw;
     height: auto;
     max-height: 40vh;
-    bottom: 3%;
+    bottom: -35%;
     left: 72%;
-    border-radius: 15px;
     font-family: "Montserrat", Helvetica, sans-serif;
     font-weight: 500;
-    transition: 400ms ease;
-    opacity: 0;
+    transition: 800ms ease;
+    opacity: 1;
 
     &__heading {
         display: flex;
@@ -25,7 +24,7 @@
     }
     &__body {
         background: linear-gradient(to bottom, #1a1a1aec, #3d3d3dfa);
-        border-radius: 15px;
+        border-radius:  10px;
         color: rgb(218, 216, 216);
         
         &__row {

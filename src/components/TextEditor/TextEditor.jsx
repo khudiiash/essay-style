@@ -22,8 +22,9 @@ import punctuationChecker from "../../modules/punctuationChecker";
 import checkReplace from "../../modules/checkReplace";
 import checkPrepositional from "../../modules/checkPrepositional";
 import checkWordOrder from "../../modules/checkWordOrder";
+import withoutReferences from "../../modules/withoutReferences";
 // Local Libs
-import phrasalVerbs from "../../libraries/phrasal-verbs";
+import phrasalVerbs from "../../libraries/phrasal-verbs"; 
 import shortForms from "../../libraries/short-forms";
 import weakWords from "../../libraries/weak-words";
 import pronouns from "../../libraries/pronouns";
@@ -67,6 +68,7 @@ class TextEditor extends React.Component {
       
     }
     this.checkForMistakes = (array, text, suggestions, comment) => {
+      text = withoutReferences(text);
       for (var i = 0; i < array.length; i++) {
         if (text.includes(array[i])) {
           if (array === shortForms) {
@@ -377,7 +379,9 @@ class TextEditor extends React.Component {
       }
       
       //Mistakes
+
       $(".clear__container").css({opacity: '1'})
+     
       $(".mistake").on("click", function() {
         var comment = $(this).attr("mistake");
 
