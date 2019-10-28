@@ -81,13 +81,11 @@ class TextEditor extends React.Component {
           if (indices.length > 0) {
             for (var k = 0; k < indices.length; k++) {
               if (!current.includes(indices[k])) {
-                var newMistake = {
-                  index: indices[k],
+                suggestions.unshift({index: indices[k],
                   offset: array[i].length,
                   reason: comment,
-                  type: 'mistake'
-                };
-                suggestions.unshift(newMistake);
+                  type: 'mistake'});
+      
               }
             }
           }

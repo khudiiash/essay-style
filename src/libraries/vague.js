@@ -19,6 +19,7 @@ let vague = [
     "somewhat",
     'somewhere',
     'somehow',
+    "Some",
     'some',
     "creates",
     "created",
@@ -41,7 +42,7 @@ let vague = [
     "understood",
     "undertook",
  ]
- vague = vague.sort();
+
 
 
  export default vague;
