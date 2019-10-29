@@ -32,6 +32,10 @@ export default function checkConcludingSentences(text, suggestions) {
         sentence.includes("for instance") ||
         sentence.includes("Moreover,") || 
         sentence.includes("It is also") || 
+        sentence.includes("It can also") || 
+        sentence.includes("It could also") || 
+        sentence.includes("It would also") || 
+        sentence.includes("It might also") || 
         sentence.includes("It has also") || 
         sentence.includes("It was also") || 
         sentence.includes("Another") || 
@@ -41,6 +45,8 @@ export default function checkConcludingSentences(text, suggestions) {
         sentence.includes("Additionally") || 
         sentence.includes("They also") || 
         sentence.includes("They have also") || 
+        sentence.includes("They can also") || 
+        sentence.includes("They could also") || 
         sentence.includes("There was also") || 
         sentence.includes("There were also") || 
         sentence.includes("There is also") || 

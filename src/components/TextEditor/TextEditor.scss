@@ -3,11 +3,11 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700&display=swap');
 
 
-$mistake-color: rgb(255, 255, 124);
+$style-color: rgb(255, 255, 124);
 $sentence-color: #fce5cd;
 $repetition-color: #c9daf8;
 $punctuation-color: #ead1dc;
-$informal-color: #f1c232;
+$formatting-color: #f9cb9c;
 $replace-color: #b6d7a8;
 
 @mixin mistakeSet ($color) {
@@ -17,10 +17,15 @@ $replace-color: #b6d7a8;
     cursor: pointer;
     border-radius: 5px;
 }
-
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 .editor {
     background: #fff;
     opacity: 1;
+
     
 
     &__center {
@@ -81,6 +86,7 @@ $replace-color: #b6d7a8;
         justify-content: center;
         align-items: center;
         position: absolute;
+        line-height: 20px;
         height: auto;
         min-height: 5vh;
         width: auto;
@@ -121,22 +127,21 @@ $replace-color: #b6d7a8;
         z-index: 1;
     }
 }
-.mistake {
+.academicStyle {
     opacity: 1;
-    @include mistakeSet($mistake-color);
+    @include mistakeSet($style-color);
 }
-.sentence {
+.structure {
     @include mistakeSet($sentence-color);
 }
 .repetition {
     @include mistakeSet( $repetition-color);
 }
-.punctuation {
+.grammar {
    @include mistakeSet($punctuation-color);
 }
-.informal {
-    @include mistakeSet($informal-color);
-
+.formatting {
+    @include mistakeSet($formatting-color);
 }
 .replace {
     @include mistakeSet($replace-color);
@@ -144,11 +149,16 @@ $replace-color: #b6d7a8;
 
 
 
+
 @media screen and (max-width: 768px) {
     .editor {
         &__text-area,&__paragraph {
-            width: 80%;
-            margin-left: 0;
+            
+            width: 95%;
+            left: 0;
+            right: 0;
+            top: 22%;
+            padding: .6em;            
         }
         &__comment {
             width: 50%;
@@ -157,7 +167,5 @@ $replace-color: #b6d7a8;
             left: 22.5%;
             top: 85%;
         }
-        
     }
-    
 }

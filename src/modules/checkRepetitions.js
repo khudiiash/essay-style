@@ -50,7 +50,7 @@ export default function checkRepetitions(text, suggestions) {
           index: firstQuoteIndex,
           offset: offset,
           reason: "Book titles must be italicized without quotation marks",
-          type: 'mistake'
+          type: 'formatting'
         });
       }
   
@@ -70,7 +70,7 @@ export default function checkRepetitions(text, suggestions) {
           index: firstQuoteIndex,
           offset: offset,
           reason: "Movie titles must be italicized without quotation marks",
-          type: 'mistake'
+          type: 'formatting'
         });
       }
   

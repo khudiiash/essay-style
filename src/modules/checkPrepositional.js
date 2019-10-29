@@ -10,16 +10,13 @@ export default function checkPrepositional(text, suggestions) {
         prep1 = /([a-zA-Z]+\s?\b)\s\bfor\b\s([a-zA-Z]+\s?\b){1,3}\s\bwould\b\s\bbe\b/gi,
         //the best outcome for this scenario would be an incremental withdrawal
 
-        prep2 = /([a-zA-Z]+\s?\b)\s\bof\b\s([a-zA-Z]+\s?\b){1,3}\s\bin\b\s([a-zA-Z]+\s?\b){1,2}/gi,
-        //the Museum of Modern Art in New York City
-
-        prep3 = /([a-zA-Z]+\s?\b)\s\bfor\b\s([a-zA-Z]+\s?\b){1,3}\s\bto\b\s([a-zA-Z]+\s?\b){1,2}/gi,
+        prep2 = /([a-zA-Z]+\s?\b)\s\bfor\b\s([a-zA-Z]+\s?\b){1,3}\s\bto\b\s([a-zA-Z]+\s?\b){1,2}/gi,
         // It is unethical for geese to do that
 
-        prep4 = /([a-zA-Z]+\s?\b)\s\bof\b\s([a-zA-Z]+\s?\b){1,3}\s\bof\b\s([a-zA-Z]+\s?\b){1,2}/gi
+        prep3 = /([a-zA-Z]+\s?\b)\s\bof\b\s([a-zA-Z]+\s?\b){1,3}\s\bof\b\s([a-zA-Z]+\s?\b){1,2}/gi
         // the effect of the influence of corporation on state politics'
 
-    let preps = [prep1, prep2, prep3, prep4]
+    let preps = [prep1, prep2, prep3]
 
     for (var g = 0; g < suggestions.length; g++) {
         current.push(suggestions[g].index);

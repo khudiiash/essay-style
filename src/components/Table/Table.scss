@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,900&display=swap');
-
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 .table {
     position: absolute;
     width:16vw;
@@ -53,4 +57,30 @@
     }
         
     
+}
+
+@media screen and (max-width: 768px) {
+
+    .table {
+        bottom: none;
+        left: 15%;
+        top: 115px;
+        width: 82%;
+        
+        &__body {
+            display: flex;
+            &__row {
+                .heading {
+                    border-bottom: none;
+                }
+                font-size: 10px;
+                flex-direction: column;
+                justify-content: center;
+                &__num {
+                    margin-top: 5px;
+                }
+            }
+            
+        }
+    }
 }

@@ -34,7 +34,6 @@ import vague from "../../libraries/vague";
 import informal from "../../libraries/informal";
 
 
-
 String.prototype.replaceAt = function(index, replacement) {
   return (
     this.substr(0, index) +
@@ -84,7 +83,7 @@ class TextEditor extends React.Component {
                 suggestions.unshift({index: indices[k],
                   offset: array[i].length,
                   reason: comment,
-                  type: 'mistake'});
+                  type: 'academicStyle'});
       
               }
             }
@@ -99,26 +98,22 @@ class TextEditor extends React.Component {
       var suggestions = [];
 
       // Look for mistakes from libraries
-
+      suggestions = checkRepetitions(text, suggestions);
       if (text.length > 0) {
         suggestions = this.checkForMistakes(
-          wordiness,
+          shortForms,
           text,
           suggestions,
-          "This phrase might be wordy. Consider changing or removing"
+          "Do not use contractions in academic writing"
         );
+       
         suggestions = this.checkForMistakes(
           informal,
           text,
           suggestions,
           "Informal phrase. Do not use idiomatic expressions and metaphors"
         );
-        suggestions = this.checkForMistakes(
-          phrasalVerbs,
-          text,
-          suggestions,
-          "Phrasal verb. Consider replacing with a one-word equivalent"
-        );
+       
         suggestions = this.checkForMistakes(
           weakWords,
           text,
@@ -131,17 +126,24 @@ class TextEditor extends React.Component {
           suggestions,
           "Do not use 1st and 2nd person pronouns. Prefer the 3rd person perspective (he, she, it, they)"
         );
-        suggestions = this.checkForMistakes(
-          shortForms,
-          text,
-          suggestions,
-          "Do not use contractions in academic writing"
-        );
+
         suggestions = this.checkForMistakes(
           vague,
           text,
           suggestions,
           "This word is vague. Consider changing to a more specific synonym"
+        );
+        suggestions = this.checkForMistakes(
+          phrasalVerbs,
+          text,
+          suggestions,
+          "Phrasal verb. Consider replacing with a one-word equivalent"
+        );
+        suggestions = this.checkForMistakes(
+          wordiness,
+          text,
+          suggestions,
+          "This phrase might be wordy. Consider changing or removing"
         );
       }
       //checking
@@ -150,7 +152,7 @@ class TextEditor extends React.Component {
       suggestions = checkAmerican(text, suggestions);
       suggestions = checkOutdated(text, suggestions);
       suggestions = checkLinkingWords(text, suggestions);
-      suggestions = checkRepetitions(text, suggestions);
+      
       suggestions = passiveVoiceChecker(text, suggestions);
       suggestions = factChecker(text, suggestions);
       suggestions = checkReferences(text, suggestions);
@@ -205,43 +207,17 @@ class TextEditor extends React.Component {
           
          var mistakeClass = suggestion.type
           
-         if (suggestion.reason.includes('Phrasal verb') ||
-             suggestion.reason.includes('passive voice') ||
-             suggestion.reason.includes('vague') ||
-             suggestion.reason.includes('Weak word') ||
-             suggestion.reason.includes('Informal') ||      
-             suggestion.reason.includes('pronouns') ||      
-             suggestion.reason.includes('contraction') ||      
-              mistakeClass === 'replace'      
-         ) {style+=1;this.setState({style: style})}
+         if (mistakeClass === 'academicStyle' || mistakeClass === 'replace') {style+=1;this.setState({style: style})}
         
-         else if (suggestion.reason.includes('Concluding') ||
-            suggestion.reason.includes('statement') ||
-            suggestion.reason.includes('new information')
-        ) {structure+=1;this.setState({structure: structure})}
+         else if (mistakeClass==='structure') {structure+=1;this.setState({structure: structure})}
             
-        else if (suggestion.reason.includes('citation') || 
-            suggestion.reason.includes('Outdated') || 
-            suggestion.reason.includes('APA') ||
-            suggestion.reason.includes('MLA') ||
-            suggestion.reason.includes('journal') ||
-            suggestion.reason.includes('title') ||
-            suggestion.reason.includes('short words in a heading')
+        else if (mistakeClass==='formatting') {formatting+=1;this.setState({formatting: formatting})}
 
-            ) 
-            {formatting+=1;this.setState({formatting: formatting})}
-        
-          else if (suggestion.reason.includes('word order') ||
-              suggestion.reason.includes('comma') ||
-              suggestion.reason.includes('wordy') ||
-              suggestion.reason.includes('preposition')
-              ) 
-              {grammar+=1;this.setState({grammar: grammar})}
-
+        else if (mistakeClass === 'grammar') {grammar+=1;this.setState({grammar: grammar})}
 
         if (
             (isLetter(text[index - 1]) || isLetter(text[index + offset])) &&
-            mistakeClass !== "punctuation" && mistakeClass !== "informal" && mistakeClass !== "sentence"
+            mistakeClass !== "grammar" && mistakeClass !== "structure"
           ) {
             abort = true;
           }
@@ -336,14 +312,6 @@ class TextEditor extends React.Component {
                 }
               }
             }
-            
-            if (
-              suggestion.reason.includes("facts, statistics") ||
-              suggestion.reason.includes("journal titles")
-            ) {
-              mistakeClass = "sentence";
-            }
-
             end = start + mistake.length;
           }
 
@@ -376,50 +344,31 @@ class TextEditor extends React.Component {
         console.log(e);
       }
       
-      //Mistakes
+     
 
       $(".clear__container").css({opacity: '1'})
-     
-      $(".mistake").on("click", function() {
-        var comment = $(this).attr("mistake");
+      
+      // style
+      $(".academicStyle").on("click", function() {
+        var comment = $(this).attr("academicStyle");
 
         comment = checkComment(comment);
         
         $(`#mistake`).text(comment);
         $(this).css({ background: "rgb(255, 155, 124)" });
 
-        $(".mistake")
+        $(".academicStyle")
           .not(this)
           .css({ background: "rgb(255, 255, 124)" });
-        $(".sentence").css({ background: "#fce5cd" });
+        $(".structure").css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
-        $(".punctuation").css({ background: "#ead1dc" });
+        $(".grammar").css({ background: "#ead1dc" });
         $(".replace").css({ background: "#b6d7a8" });
-        $(".informal").css({background:"#f1c232"})
+        $(".formatting").css({background:"#f9cb9c"})
         $(`#mistake`).css({ opacity: "1" });
       });
-      // Informal
-      $(".informal").on("click", function() {
-        var comment = $(this).attr("informal");
-
-        comment = checkComment(comment);
-
-        $(`#mistake`).text(comment);
-        
-        $(this).css({ background: "rgb(255, 155, 124)" });
-
-        $(".informal")
-          .not(this)
-          .css({ background: "#f1c232" });
-        $(".mistake").css({ background: "rgb(255, 255, 124)" });
-        $(".sentence").css({ background: "#fce5cd" });
-        $(".repetition").css({ background: "#c9daf8" });
-        $(".replace").css({ background: "#b6d7a8" });
-        $(".punctuation").css({ background: "#ead1dc" });
-        $(`#mistake`).css({ opacity: "1" });
-      });
-
-       // Complex
+    
+       // Replace
        $(".replace").on("click", function() {
         var comment = $(this).attr("replace");
 
@@ -432,11 +381,11 @@ class TextEditor extends React.Component {
         $(".replace")
           .not(this)
           .css({ background: "#b6d7a8" });
-        $(".mistake").css({ background: "rgb(255, 255, 124)" });
-        $(".sentence").css({ background: "#fce5cd" });
+        $(".academicStyle").css({ background: "rgb(255, 255, 124)" });
+        $(".structure").css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
-        $(".informal").css({background:"#f1c232"});
-        $(".punctuation").css({ background: "#ead1dc" });
+        $(".formatting").css({background:"#f9cb9c"});
+        $(".grammar").css({ background: "#ead1dc" });
         $(`#mistake`).css({ opacity: "1" });
       });
 
@@ -450,58 +399,79 @@ class TextEditor extends React.Component {
         $(`#mistake`).text(comment);
         $(this).css({ background: "rgb(255, 155, 124)" });
 
-        $(".mistake").css({
+        $(".academicStyle").css({
           background: "rgb(255, 255, 124)",
           color: "#000"
         });
-        $(".sentence").css({ background: "#fce5cd" });
+        $(".structure").css({ background: "#fce5cd" });
         $(".repetition")
           .not(this)
           .css({ background: "#c9daf8" });
         $(".replace").css({ background: "#b6d7a8" });
-        $(".punctuation").css({ background: "#ead1dc" });
-        $(".informal").css({background:"#f1c232"})
+        $(".grammar").css({ background: "#ead1dc" });
+        $(".formatting").css({background:"#f9cb9c"})
         $(`#mistake`).css({ opacity: "1" });
       });
 
       // Sentences
-      $(".sentence").on("click", function() {
-        var comment = $(this).attr("sentence");
+      $(".structure").on("click", function() {
+        var comment = $(this).attr("structure");
 
         comment = checkComment(comment);
 
         $(`#mistake`).text(comment);
         $(this).css({ background: "rgb(255, 155, 124)" });
 
-        $(".mistake").css({ background: "rgb(255, 255, 124)", color: "#000" });
-        $(".sentence")
+        $(".academicStyle").css({ background: "rgb(255, 255, 124)", color: "#000" });
+        $(".structure")
           .not(this)
           .css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
-        $(".punctuation").css({ background: "#ead1dc" });
+        $(".grammar").css({ background: "#ead1dc" });
         $(".replace").css({ background: "#b6d7a8" });
-        $(".informal").css({background:"#f1c232"})
+        $(".formatting").css({background:"#f9cb9c"})
         $(`#mistake`).css({ opacity: "1" });
       });
 
-      // Punctuation
-      $(".punctuation").on("click", function() {
-        var comment = $(this).attr("punctuation");
+      // Grammar
+      $(".grammar").on("click", function() {
+        var comment = $(this).attr("grammar");
 
         comment = checkComment(comment);
         $(`#mistake`).text(comment);
         $(this).css({ background: "rgb(255, 155, 124)" });
-        $(".mistake").css({
+        $(".academicStyle").css({
           background: "rgb(255, 255, 124)",
           color: "#000"
         });
-        $(".sentence").css({ background: "#fce5cd" });
+        $(".structure").css({ background: "#fce5cd" });
         $(".repetition").css({ background: "#c9daf8" });
         $(".replace").css({ background: "#b6d7a8" });
-        $(".informal").css({background:"#f1c232"});
-        $(".punctuation")
+        $(".formatting").css({background:"#f9cb9c"});
+        $(".grammar")
           .not(this)
           .css({ background: "#ead1dc" });
+        $(`#mistake`).css({ opacity: "1" });
+      });
+
+       // Formatting
+       $(".formatting").on("click", function() {
+        var comment = $(this).attr("formatting");
+
+        comment = checkComment(comment);
+        $(`#mistake`).text(comment);
+        $(this).css({ background: "rgb(255, 155, 124)" });
+        $(".academicStyle").css({
+          background: "rgb(255, 255, 124)",
+          color: "#000"
+        });
+        $(".structure").css({ background: "#fce5cd" });
+        $(".repetition").css({ background: "#c9daf8" });
+        $(".replace").css({ background: "#b6d7a8" });
+        $(".grammar").css({background:"#ead1dc"});
+        $(".formatting")
+          .not(this)
+          .css({ background: "#f9cb9c" });
         $(`#mistake`).css({ opacity: "1" });
       });
     };

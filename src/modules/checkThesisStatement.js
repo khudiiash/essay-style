@@ -10,7 +10,8 @@ export default function checkThesisStatement(text, thesisStatement, suggestions)
           suggestions.unshift({
             index: index,
             offset: thesisStatement.length,
-            reason: "Thesis statement must not be a citation"
+            reason: "Thesis statement must not be a citation",
+            type: 'structure'
           });
           return suggestions;
         }
@@ -20,7 +21,7 @@ export default function checkThesisStatement(text, thesisStatement, suggestions)
             offset: thesisStatement.length,
             reason:
               "This is a purpose statement. Remember that you have to use a thesis statement",
-            type: 'sentence'
+            type: 'structure'
           });
           return suggestions;
         }
@@ -54,7 +55,7 @@ export default function checkThesisStatement(text, thesisStatement, suggestions)
           offset: thesisStatement.length,
           reason:
             "Incorrect thesis statement. You must have presented a central claim on the topic",
-          type: 'sentence'
+          type: 'structure'
         });
       }
     }

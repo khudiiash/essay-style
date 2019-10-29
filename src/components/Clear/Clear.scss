@@ -1,21 +1,26 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,900&display=swap');
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 .clear {
     &__container {
         display: flex;
         justify-content: center;
         position: absolute;
         width: 50%;
-        margin-left: 49%;
-        margin-top: 30px;
+        left: 49%;
+        top: 30px;
         opacity: 0;
         transition: 400ms ease;
     }
     &__icon {
-        height: 45px;
-        width: 45px;
+        height: 35px;
+        width: 35px;
         position: absolute;
-        opacity: .5;
+        opacity: .3;
         transition: 300ms;
         cursor: pointer;
         &:hover {
@@ -25,26 +30,45 @@
         }
         &:hover + .clear__hidden-label {
             opacity: 1;             
-            margin-left: 0;
+            margin-top: 55px;
         }
         
     }
     &__hidden-label {
         text-transform: uppercase;
-        font-size: 14px;
+        font-size: 12px;
         font-family: "Montserrat";
         font-weight: 600;
         letter-spacing: 2px;
         background: -webkit-linear-gradient(rgb(0, 0, 0), rgb(158, 158, 158));
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         position: relative;
-        margin-top: 55px;
+        margin-top: 35px;
         cursor: default;
-        margin-left: -45px;
         opacity: 0;
         transition: all 400ms ease;
         
     }
 
+}
+
+@media screen and (max-width: 768px) {
+
+    .clear {
+        &__container {
+            width: 10%;
+        left: 12px;
+        top: 119px;
+        }
+         &__icon {
+             opacity: 1;
+            &:hover + .clear__hidden-label {             
+                display: none;
+            }
+        }
+    }
+    
+    
 }

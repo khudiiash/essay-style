@@ -19,7 +19,7 @@ export default function checkOutdated(text, suggestions) {
                 offset: 4,
                 reason:
                   "Outdated source; use only sources published within the last 10 years",
-                type: 'mistake'
+                type: 'formatting'
               });
             }
           }

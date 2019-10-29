@@ -74,7 +74,7 @@ export default function checkReferences(text, suggestions) {
                 index: text.lastIndexOf(referenceTitle),
                 offset: referenceTitle.length,
                 reason: "In APA, capitalize only initial words and proper names",
-                type: 'sentence'
+                type: 'formatting'
               });
             }
             var splitReference = reference.split(". ");
@@ -105,7 +105,7 @@ export default function checkReferences(text, suggestions) {
                   offset: referenceJournal.length,
                   reason:
                     "In APA, journal articles require doi identifier at the end of the reference (eg: doi:10.1000/182)",
-                    type: 'sentence'
+                    type: 'formatting'
                 });
               }
             }
@@ -130,7 +130,7 @@ export default function checkReferences(text, suggestions) {
                 index: text.lastIndexOf(journalTitle),
                 offset: journalTitle.length,
                 reason: `Capitalize all major words in journal titles: "${capitalTitle}"`,
-                type: 'sentence'
+                type: 'formatting'
               });
             }
             if (countBrackets(text) > 0) {
@@ -155,7 +155,7 @@ export default function checkReferences(text, suggestions) {
                       index: brackets[y].index,
                       offset: brackets[y][0].length,
                       reason: "Incorrect citation formatting",
-                      type: 'mistake'
+                      type: 'formatting'
                     });
                   }
                 }
@@ -182,6 +182,7 @@ export default function checkReferences(text, suggestions) {
                   .indexOf("http"),
               reason:
                 'In MLA, do not include http// or https// protocols. Begin with "www..."',
+                type: 'formatting'
             });
           }
           if (!isCapitalized(referenceTitle)) {
@@ -189,7 +190,7 @@ export default function checkReferences(text, suggestions) {
               index: text.lastIndexOf(referenceTitle),
               offset: referenceTitle.length,
               reason: "In MLA, capitalize all major words in the title",
-              type: 'sentence'
+              type: 'formatting'
             });
           }
           if (countBrackets(text) > 0) {
@@ -213,7 +214,7 @@ export default function checkReferences(text, suggestions) {
                     index: brackets[o].index,
                     offset: brackets[o][0].length,
                     reason: "Incorrect citation formatting",
-                    type: 'mistake'
+                    type: 'formatting'
                   });
                 }
               }

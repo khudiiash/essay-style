@@ -14,6 +14,8 @@ function checkAPA(citation) {
         // (Johns, Kelly, & Brian, 2015)
     var author_c_author_c_author_c_8_author_c_2015 = /\((\w+\,\s\w+\,\s\w+\,\s\&\s\w+\,\s\d+)\)/
         // (Johns, Kelly, Richards, & Brian, 2015)
+    var author_c_author_c_author_c_author_c_8_author_c_2015 = /\((\w+\,\s\w+\,\s\w+\,\s\w+\,\s\&\s\w+\,\s\d+)\)/
+        // (Johns, Kelly, Richards, Richards, & Brian, 2015)
     var author_c_2015_c_p_155 = /\((\w+\,\s\d+\,\s\p\.\s\d+)\)/
         // (Johns, 2015, p. 155)
     var author_8_author_c_2015_c_p_155 = /\((\w+\s\&\s\w+\,\s\d{4}\,\s\p\.\s\d+)\)/
@@ -42,6 +44,7 @@ function checkAPA(citation) {
         author_8_author_c_2015,
         author_c_author_c_8_author_c_2015,
         author_c_author_c_author_c_8_author_c_2015,
+        author_c_author_c_author_c_author_c_8_author_c_2015,
         author_c_2015_c_p_155,
         author_8_author_c_2015_c_p_155,
         author_c_author_c_8_author_c_2015_c_p_155,

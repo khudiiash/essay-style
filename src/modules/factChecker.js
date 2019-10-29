@@ -38,14 +38,15 @@ export default function factChecker(text, suggestions) {
       }
     }
   
-    var current = [];
-    for (var g = 0; g < suggestions.length; g++) {
-      current.push(suggestions[g].index);
-    }
+    
   
     if (/[^\s()]+(?=[^()]*\))/.test(paragraphs[0])) {
       let indices = [...paragraphs[0].matchAll(/\(([^)]+)\)/g)];
       for (var i = 0; i < indices.length; i++) {
+        var current = [];
+      for (var g = 0; g < suggestions.length; g++) {
+        current.push(suggestions[g].index);
+      }
         if (
           !current.includes(indices[i].index) &&
           (/\d+/.test(indices[i][0]) ||
@@ -57,7 +58,7 @@ export default function factChecker(text, suggestions) {
             offset: indices[i][0].length,
             reason:
               "Conclusion must not contain any new information, especially citations",
-              type: 'mistake'
+              type: 'structure'
           });
   
           for (var t = 1; t < suggestions.length; t++) {
@@ -81,7 +82,10 @@ export default function factChecker(text, suggestions) {
       let sentences = paragraphs[i].split(". ");
       for (let s = 0; s < sentences.length - 1; s++) {
         var sentence = sentences[s];
-  
+        current = [];
+      for (g = 0; g < suggestions.length; g++) {
+          current.push(suggestions[g].index);
+      }
         if (
           !/[^\s()]+(?=[^()]*\))/.test(sentence) &&
           (/\d{4}/.test(sentence) ||
@@ -100,7 +104,7 @@ export default function factChecker(text, suggestions) {
               offset: sentence.length,
               reason:
                 "Any facts, statistics, or other specific information require citations",
-                type: 'sentence'
+                type: 'structure'
             });
           }
 
@@ -115,7 +119,10 @@ export default function factChecker(text, suggestions) {
           let words = heading.split(" ");
           for (var x = 0; x < words.length; x++) {
             let index = findInnerIndex(text, heading, words[x]);
-  
+            current = [];
+            for (g = 0; g < suggestions.length; g++) {
+                current.push(suggestions[g].index);
+            }
             if (
               (prepositions.includes(words[x].toLowerCase()) ||
                 conjunctions.includes(words[x].toLowerCase())) &&
@@ -127,7 +134,7 @@ export default function factChecker(text, suggestions) {
                 offset: words[x].length,
                 reason:
                   "Do not capitalize prepositions, conjunctions, and other short words in a heading",
-                type: 'mistake'
+                type: 'formatting'
               });
             }
           }
