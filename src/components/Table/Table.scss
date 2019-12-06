@@ -19,12 +19,6 @@
     &__heading {
         display: flex;
         justify-content: center;
-
-        & .h2 {
-            width: 50%;
-            margin-top: 5px;
-            text-align: center;
-        }
     }
     &__body {
         background: linear-gradient(to bottom, #1a1a1aec, #3d3d3dfa);
@@ -33,6 +27,7 @@
         
         &__row {
             cursor: default;
+
             .heading {
                 display: flex;
                 justify-content: center;
@@ -53,6 +48,7 @@
                 width: 50%;
                 text-align: center;
             }
+           
         }
     }
         
@@ -64,20 +60,33 @@
     .table {
         bottom: none;
         left: 15%;
-        top: 115px;
+        top: 15px;
         width: 82%;
-        
+
+        &__heading {
+            display: flex;
+            justify-content: center;
+            margin: 0;
+    
+        }
         &__body {
             display: flex;
             &__row {
                 .heading {
-                    border-bottom: none;
+                    margin: 5px;
+                    border: none;
+                }
+                #allMistakes {
+                    margin-top: -2px;
                 }
                 font-size: 10px;
                 flex-direction: column;
                 justify-content: center;
                 &__num {
-                    margin-top: 5px;
+                   margin: 3px;
+                }
+                &__num:not(.counter) {
+                    margin-right: 5px;
                 }
             }
             

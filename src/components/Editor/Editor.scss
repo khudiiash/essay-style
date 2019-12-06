@@ -1,0 +1,174 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+$dark-background: linear-gradient(to bottom, #232526, #000000);
+$dark-content: linear-gradient(to bottom, #363636, #161616);
+$dark-font-color: blanchedalmond;
+$dark-mark: #a82700;
+$dark-selected: #ab5e00;
+
+
+$white-background: linear-gradient(to bottom, #e0e0e0, #ffffff);
+$white-content: linear-gradient(to top, #f3f3f3 0%, #ffffff 30%);
+$white-color: #2d2d2d;
+$white-mark: #ffee51;
+$white-selected: rgb(255, 176, 176);
+
+@mixin white-scroll-bar {
+    ::-webkit-scrollbar {
+      width: 10px;
+      padding: 4px;
+      border-radius: 50%;
+      position: relative;
+      z-index: 4;
+      
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent; 
+      border-radius: 15px;
+      z-index: 4;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 15px;
+      position: relative;
+      background: radial-gradient(rgba(185, 185, 185, 0.349),transparent); 
+      background:rgba(185, 185, 185, 0.349);
+      cursor: pointer;
+      z-index: 4;
+  
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgb(253, 238, 107); 
+      z-index: 4;
+    }
+  }
+  
+
+.App {
+    height: 101vh;
+    background: $white-background;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 9fr 3fr;
+}
+.buttons {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+
+}
+.editor, .backdrop, .edit-textarea {
+  width: 640px;
+  height: 96vh;
+  
+}
+
+
+.highlights, .edit-textarea {
+  padding: 20px;
+  text-indent: 2em;
+  padding-top: 50px;
+  font: 20px/28px 'Open Sans', sans-serif;
+  @include white-scroll-bar;
+  
+
+}
+.editor {
+  
+  display: block;
+  margin-left:auto;
+  margin-right:5%;
+  padding-top: 30px;
+  -webkit-text-size-adjust: none;
+  @include white-scroll-bar;
+  
+}
+
+.backdrop {
+
+  border-radius: 5px;
+  font-family: "Times New Roman";
+  position: absolute;
+  overflow: auto;
+  transition: transform 1s;
+  text-align: left;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.205);
+  background: $white-content;
+  background: white;
+ 
+}
+
+.highlights {
+    
+	white-space: pre-wrap;
+	word-wrap: break-word;
+  color: transparent;
+  font-family: "Times New Roman";
+    
+
+    
+}
+
+.edit-textarea {
+    
+display: block;
+position: absolute;
+margin: 0;
+font-family: "Times New Roman";
+color: #444;
+background-color: transparent;
+overflow: auto;
+resize: none;
+transition: transform 1s;
+outline: none;
+-moz-appearance: none;
+height: 97vh;
+border: none;
+resize: none;
+color: $white-color;
+font-size: 20px;
+
+
+}
+
+span {
+  border-radius: 1px;
+  color: transparent;
+  background-color: transparent;
+  border-bottom: 3px rgb(255, 198, 43) solid;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+  transition: all 100ms ease-in-out;
+  &:hover {
+      z-index: 1;
+      position: relative;
+      span {
+        color: #2d2d2d;
+        z-index: 2;
+      }
+      color: #2d2d2d;
+        border-radius: 3px;
+        background-color: rgb(253, 238, 107);
+  }
+}
+     
+.links {
+  text-decoration: none;
+  font-size: 16px;
+  color: rgb(146, 175, 255);
+  transition: 200ms ease;
+  &:hover {
+    color: rgb(0, 139, 173)
+  }
+}
+.italics {
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+}
+

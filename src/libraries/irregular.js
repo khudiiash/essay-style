@@ -1,5 +1,5 @@
 let irregular = [
-    'been','beaten','become','begun','bet','blown','brocken','built','bought','brought',
+    'been','born','beaten','become','begun','bet','blown','brocken','built','bought','brought',
     'caught','chosen','cut','dealt','done','drawn','drunk','driven','eaten','fallen','felt',
     'fought','found','flown','forgotten','forgiven','frozen','given','gone','grown',
     'hung','heard','hidden','hit','held','hurt','kept','known','laid','left','lent','let',

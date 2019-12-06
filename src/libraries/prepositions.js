@@ -1,5 +1,4 @@
-let prepositions = "about,beside,near,to,above,between,of,towards,across,beyond,off,under,after,by,on,underneath,against,despite,onto,unlike,along,down,opposite,until,among,during,out,up,around,except,outside,upon,as,for,over,via,at,from,past,with,before,in,round,within,behind,inside,since,without,below,into,than,beneath,though".split(
-    ","
-  );
+let prepositions = `aboard|about|above|across|after|against|along|amid|among|around|away|as|at|before|behind|below|beneath|beside|besides|between|beyond|but|by|concerning|considering|despite|down|during|except|excepting|excluding|following|for|from|in|inside|into|like|minus|near|of|off|on|onto|opposite|out|outside|over|past|per|plus|regarding|round|save|since|than|through|to|toward|towards|under|underneath|unlike|until|up|upon|versus|via|with|within|without`
+
 
 export default prepositions;

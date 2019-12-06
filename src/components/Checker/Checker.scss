@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato:400,500,600,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,500,600,700&display=swap');
+
+
+$style-color: rgb(255, 255, 124);
+$sentence-color: #fce5cd;
+$repetition-color: #c9daf8;
+$punctuation-color: #ead1dc;
+$formatting-color: #f9cb9c;
+$replace-color: #b6d7a8;
+// .backdrop {
+//     display: none;
+// }
+@mixin mistakeSet ($color) {
+    position: relative;
+    background: $color;
+    transition: 400ms;
+    cursor: pointer;
+    border-radius: 5px;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.checker {
+    background: #fff;
+    opacity: 1;
+
+    
+
+    &__center {
+        background: #fff;
+        display: flex;
+        justify-content: center;
+    }
+
+   
+    .check-textarea {
+        outline: none;
+        -moz-appearance: none;
+        border: none;
+        resize: none;
+        background: rgba(255, 255, 255, 0.87);
+        position: absolute;
+        padding: 2em;
+        width: 640px;
+        height: 96vh;
+        margin: 10px;
+        text-indent: 2em;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: "Montserrat";
+        z-index: 3;
+        opacity: 1;
+        border-radius: 5px;
+    }
+    &__paragraph {
+       
+        background: rgb(255, 255, 255);
+        position: absolute;
+        font-family: "Times New Roman",sans-serif;
+        font-weight:900;
+        text-align: left;
+        padding: 2em;
+        width: 640px;
+        height: 96vh;
+        margin: 10px;
+        text-indent: 2em;
+        font-size: 18px;
+        font-weight: 500;
+        z-index: 1;
+        opacity: 1;
+        overflow: scroll;
+        text-indent: 2em;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.205);
+        border-radius: 5px;
+        
+    }
+    &__paragraph::-webkit-scrollbar { width: 0 !important }
+    
+
+    &__mistakes {
+        display: flex;
+        font-family: "Open Sans", sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+        color: #2d2d2d;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        height: auto;
+        width: 15vw;
+        top: 35%;
+        left: 22%;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0,0,0,.4);
+        padding: 10px;
+        opacity: 0;
+        transition: 300ms;
+        background: #2d2d2d;
+        color: white;
+        z-index: 1;
+    }
+}
+.academicStyle {
+    opacity: 1;
+    @include mistakeSet($style-color);
+}
+.structure {
+    @include mistakeSet($sentence-color);
+}
+.repetition {
+    @include mistakeSet( $repetition-color);
+}
+.grammar {
+   @include mistakeSet($punctuation-color);
+}
+.formatting {
+    @include mistakeSet($formatting-color);
+}
+.replace {
+    @include mistakeSet($replace-color);
+}
+
+
+@media screen and (max-width: 768px) {
+    .checker {
+        .check-textarea,&__paragraph {
+            font-size: 15px;
+            width: 95%;
+            left: 0;
+            right: 0;
+            top: 10%;
+            padding: .6em;            
+        }
+        .check-textarea {
+            padding-top: 2em;
+        }
+        &__comment {
+            font-size: 14px;
+            width: 80%;
+            max-height: 25vh;
+            max-width: none;
+            min-width: none;
+            left: 10%;
+            top: 85%;
+            
+            
+        }
+    }
+}

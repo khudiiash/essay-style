@@ -1,0 +1,1 @@
+const thesisRX = /(?<=(\.\s))(?!\.)([A-Za-z0-9%(),;&'\"\s]+)?\s?\b(?:example|instance|also|additionally|in addition|moreover|likewise|furthermore|besides|another|\d+)\b[A-Za-z0-9%(),;&'\"\s]+(\((.*)?\d{4}\))?[.?!](?=(\s{1,})?\n)/

@@ -46,7 +46,7 @@ class Table extends React.Component {
                       });
                 },50)
                
-                $('.table').css({bottom: '3%'})
+                $('.table').css({bottom: '1%'})
                 let number  = this.props.number,
                     style = {'Style':Math.round(this.props.style/number*100)},
                     formatting = {'Formatting':Math.round(this.props.formatting/number*100)},
@@ -78,7 +78,7 @@ class Table extends React.Component {
             <div className='table' id='mainTable'>
                 <div className='table__body'>
                    <div className='table__body__row'>
-                    <div className='table__body__row__num heading'>All mistakes</div><div className='table__body__row__num heading' id='allMistakes'>{this.props.number}</div>
+                    <div className='table__body__row__num heading'>Mistakes</div><div className='table__body__row__num heading' id='allMistakes'>{this.props.number}</div>
                     </div>
                     <div className='table__body__row'>
                     <div className='table__body__row__num'>{Object.keys(this.state.mistake1)[0]}</div><div className='table__body__row__num counter'>{Object.values(this.state.mistake1)[0]}%</div>

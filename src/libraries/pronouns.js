@@ -1,12 +1,5 @@
 let pronouns = [
-    "we","us ","our","you","yourself","ourselves"
+    "we","us","yourself","your","you","ourselves","our"
  ]
-
-pronouns = pronouns.sort()
-
-//  for (var i=0; i<pronouns.length;i++) {
-//     pronouns[i] = ' '+pronouns[i];
-// }
-
 
  export default pronouns;

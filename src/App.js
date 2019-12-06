@@ -1,16 +1,20 @@
-import React from 'react';
-import './App.css';
+import React, { Component } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import './App.scss';
 
-import { TextEditor, Clear} from './components'
+import { Editor } from './components'
 
 
-function App() {
-  return (
-    <div className="App">
-      <Clear />
-      <TextEditor />
-    </div>
-  );
+class App extends Component {
+  render() {
+    
+    return (
+        <div className="App">
+             <Editor />
+        </div>
+
+
+    )
+  }
 }
-
 export default App;
