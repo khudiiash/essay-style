@@ -38,7 +38,7 @@ let phrasalVerbs = [
 `(?:clearing|clog|clogs|clogged|clogging) up`,
 `(?:close|closes|closed|closing) down`,
 `(?:close|closes|closed|closing) off`,
-`(?:come|comes|came|coming) ${phrasalPrepositions}(?! against)`,
+`(?:come|comes|came|coming) (?!from)${phrasalPrepositions}(?! against)`,
 `(?:con|cones|conned|conning) into`,
 `(?:con|cones|conned|conning) out`,
 `(?:cool|cools|cooled|cooling) off`,

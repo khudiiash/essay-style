@@ -125,8 +125,7 @@ let replace = [
     { 'domiciled in' : 'living in' }, 
     { 'drawbacks' : 'weaknesses'}, { 'drawback' : 'weakness'},
     { 'due to the fact that' : 'because, as' },
-    { 'Due to' : 'Because of'},
-    { 'due to' : 'because of'},
+    { 'due to' : 'because of, in result of'},
     { 'during which time' : 'while' }, 
     { 'dwelling' : 'home' }, 
     { 'eligible' : 'allowed, qualified' }, 
@@ -482,6 +481,11 @@ let replace = [
     {'backs up': 'supports'},
     {'backed up': 'supported'},
     {'backing up': 'supported'},
+
+    {'come from':'originate from,have its source in'},
+    {'comes from':'originates from,has its source in'},
+    {'came from':'originated from,had its source in'},
+    {'coming from':'originating from,having its source in'},
 
     {'look after': 'take care of'},
     {'looks after': 'takes care of'},
