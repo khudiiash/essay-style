@@ -562,7 +562,6 @@ let replace = [
     {'got over': 'recovered from'},
     {'getting over': 'recovering from'},
 
-
     {'get on': 'succeed'},
     {'gets on': 'succeeds'},
     {'got on': 'succeeded'},
@@ -597,7 +596,6 @@ let replace = [
     {'makes up': 'invents'},
     {'made up': 'invented'},
     {'making up': 'inventing'},
-
 
     {'put up': 'raise, increase'},
     {'puts up': 'raises, increases'},

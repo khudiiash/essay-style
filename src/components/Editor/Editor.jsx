@@ -39,13 +39,20 @@ import alsoRX from "../../libraries/regex/alsoRX";
 import determiner from "../../libraries/regex/determiner";
 import wordOrderRX from "../../libraries/regex/wordOrder";
 
-//modules
+
 import clean from "../../modules/clean";
 import { disableScroll, enableScroll } from "../../modules/scroll";
 
 let thesaurus = "https://thesaurus.com/browse/";
 let citations =
   "https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/in_text_citations_the_basics.html";
+
+
+
+
+
+  
+
 
 let regexes = []
   .concat(prepositionalRX)
@@ -62,16 +69,9 @@ let regexes = []
   .concat(determiner)
   .concat(wordOrderRX);
 
-let spanColor = "transparent",
-  spanColorSelected = "rgb(253, 238, 107)";
-let sentences = [],
-  wordOrder = [],
-  facts = [],
-  punctuation = [],
-  references = [],
-  empty = true;
 
 let replaceArray = [];
+
 for (var p = 0; p < replace.length; p++) {
   let pair = replace[p];
 
@@ -80,7 +80,7 @@ for (var p = 0; p < replace.length; p++) {
 }
 
 let replacePVs = [];
-for (p = 0; p < replacePV.length; p++) {
+for (var p = 0; p < replacePV.length; p++) {
   let pair = replacePV[p];
   let replaceWord = Object.keys(pair)[0];
   replacePVs.push(replaceWord);
@@ -337,14 +337,10 @@ class Editor extends React.Component {
               );
               $(this).html(mistake);
               return text;
-            } else if (wordOrder.includes(mistake)) {
-              $(".comment-heading").text("Word order");
-              $(".comment-text").text("Wrong word order");
-              return text;
             } else if (clean(vague).includes(mistake.toLowerCase())) {
               $(".comment-heading").text("Vagueness");
-              $(".comment-text").text(
-                "Vague word or phrase. Consider replacing"
+              $(".comment-text").html(
+                `Vague word or phrase. Consider replacing with a more specific word. Check out synonyms for <a class='links' href='${thesaurus}${mistake}?s=t' target="_blank">${mistake}<a>`
               );
               return text;
             } else if (pronouns.includes(mistake.toLowerCase())) {
@@ -396,12 +392,6 @@ class Editor extends React.Component {
                     } might be ambiguous and vague. Please, replace with a more specific equivalent or edit out`
                   );
 
-              return text;
-            } else if (punctuation.includes(mistake)) {
-              $(".comment-heading").text();
-              $(".comment-text").text(
-                'Since it is a restrictive clause, replace "which" with "that"'
-              );
               return text;
             } else if (APAcitationRX.test(mistake)) {
               $(".comment-heading").text("Formatting");
@@ -457,9 +447,6 @@ class Editor extends React.Component {
                   setTimeout(doUndo(), 1);
                 });
               }
-              return text;
-            } else if (references.includes(mistake)) {
-              $(".comment-text").text("Incorrect formatting");
               return text;
             } else if (mistake === "another" || mistake === "also") {
               $(".comment-heading").text("Tautology");
@@ -537,20 +524,6 @@ class Editor extends React.Component {
               });
 
               return text;
-            } else if (facts.includes(mistake)) {
-              if (/^\(.*\)$/.test(mistake)) {
-                $(".comment-heading").text("Citation at the end");
-                $(".comment-text").text(
-                  "Conclusion paragraph must not include any new information, especially citations"
-                );
-                return text;
-              } else {
-                $(".comment-heading").text("No citation");
-                $(".comment-text").text(
-                  "Any dates, statistics, and specific facts must be cited"
-                );
-                return text;
-              }
             } else if (
               replaceArray.includes(mistake) ||
               replaceArray.includes(mistake.capitalize()) ||
@@ -603,7 +576,6 @@ class Editor extends React.Component {
                       let repls = repl.split(",");
                       for (r = 0; r < repls.length; r++) {
                         $(`.btn-${r.toString()}`).text(repls[r].trim());
-
                         $(`.btn-${r.toString()}`).show();
                         // eslint-disable-next-line no-loop-func
                         $(`.btn-${r.toString()}`).click(function() {
@@ -677,7 +649,6 @@ class Editor extends React.Component {
 
                       for (r = 0; r < repls.length; r++) {
                         $(`.btn-${r.toString()}`).text(repls[r].trim());
-
                         $(`.btn-${r.toString()}`).show();
                         $(`.btn-${r.toString()}`).click(function() {
                           let replaceRX = new RegExp(`\\b${mistake}\\b`, "g");
