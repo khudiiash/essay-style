@@ -53,7 +53,7 @@ $white-selected: rgb(255, 176, 176);
 }
 .wrapper {
   display: grid;
-  grid-template-columns: 9fr 3fr;
+  grid-template-columns: 9.3fr 2.7fr;
 }
 .buttons {
   margin-top: 50px;
@@ -62,14 +62,14 @@ $white-selected: rgb(255, 176, 176);
 
 }
 .editor, .backdrop, .edit-textarea {
-  width: 640px;
+  width: 740px;
   height: 96vh;
   
 }
 
 
 .highlights, .edit-textarea {
-  padding: 20px;
+  padding: 40px;
   text-indent: 2em;
   padding-top: 50px;
   font: 20px/28px 'Open Sans', sans-serif;
@@ -139,11 +139,11 @@ span {
   border-radius: 1px;
   color: transparent;
   background-color: transparent;
-  border-bottom: 3px rgb(255, 198, 43) solid;
+  border-bottom: 2px rgb(255, 206, 43) solid;
   position: relative;
   z-index: 1;
   cursor: default;
-  transition: all 100ms ease-in-out;
+  transition: all 50ms;
   &:hover {
       z-index: 1;
       position: relative;
@@ -171,4 +171,7 @@ span {
   color: #fff;
   font-weight: 500;
 }
-
+.important {
+  font-size: 16px;
+  color: rgb(255, 86, 86)
+}

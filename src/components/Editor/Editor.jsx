@@ -6,6 +6,7 @@ import $ from "jquery";
 import Comment from "../Comment/Comment";
 import Theme from "../Buttons/Theme/Theme";
 import Mode from "../Buttons/Mode/Mode";
+import Style from "../Buttons/Style/Style";
 
 //libs
 import phrasalVerbs from "../../libraries/phrasal-verbs";
@@ -17,8 +18,10 @@ import informal from "../../libraries/informal";
 import replace from "../../libraries/replace";
 import weasel from "../../libraries/weasel";
 import replacePV from "../../libraries/replacePV";
+import shortForms from "../../libraries/short";
+import british from "../../libraries/british";
 
-// regex
+// regexp
 import concludingSentencesRX from "../../libraries/regex/concludingSentencesRX";
 import {
   passiveRXglobal,
@@ -35,24 +38,20 @@ import prepositionalRX from "../../libraries/regex/prepositionalRX";
 import apostrophesRX from "../../libraries/regex/apostrophesRX";
 import repetitionsRX from "../../libraries/regex/repetitionsRX";
 import APAcitationRX from "../../libraries/regex/APAcitationRX";
-import alsoRX from "../../libraries/regex/alsoRX";
+import MLAcitationRX from "../../libraries/regex/MLAcitationRX";
 import determiner from "../../libraries/regex/determiner";
 import wordOrderRX from "../../libraries/regex/wordOrder";
+import thesisRX from "../../libraries/regex/thesisRX";
 
-
+// Modules
 import clean from "../../modules/clean";
 import { disableScroll, enableScroll } from "../../modules/scroll";
 
-let thesaurus = "https://thesaurus.com/browse/";
-let citations =
-  "https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/in_text_citations_the_basics.html";
-
-
-
-
-
-  
-
+// Links
+let thesaurus = "https://thesaurus.com/browse/",
+  citations =
+    "https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/in_text_citations_the_basics.html",
+  thesisURL = "https://writingcenter.unc.edu/tips-and-tools/thesis-statements/";
 
 let regexes = []
   .concat(prepositionalRX)
@@ -63,12 +62,11 @@ let regexes = []
   .concat(conjunctionStart)
   .concat(apostrophesRX)
   .concat(repetitionsRX)
+  .concat(determiner)
+  .concat(wordOrderRX)
+  .concat(thesisRX)
   .concat(APAcitationRX)
   .concat(outdated)
-  .concat(alsoRX)
-  .concat(determiner)
-  .concat(wordOrderRX);
-
 
 let replaceArray = [];
 
@@ -104,6 +102,10 @@ let mistakes = phrasalVerbs
 String.prototype.capitalize = function() {
   return this[0].toUpperCase() + this.substring(1, this.length);
 };
+function doUndo() {
+  document.execCommand("undo", false, null);
+}
+
 
 class Editor extends React.Component {
   constructor() {
@@ -111,13 +113,16 @@ class Editor extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.toChecker = this.toChecker.bind(this);
     this.toEditor = this.toEditor.bind(this);
+    this.toMLA = this.toMLA.bind(this);
+    this.toAPA = this.toAPA.bind(this);
     this.switchTheme = this.switchTheme.bind(this);
     this.state = {
       comment: "",
       repetitions: [],
       concluding: [],
       theme: "white",
-      mode: "edit"
+      mode: "edit",
+      citationStyle: "APA"
     };
   }
 
@@ -160,11 +165,33 @@ class Editor extends React.Component {
     this.setState({ mode: "edit" });
     this.componentDidMount(false, this.state.theme);
   }
-  componentDidMount(isChecker = false, theme = "white") {
+
+  toMLA() {
+    this.setState({ citationStyle: "MLA" });
+    this.componentDidMount(
+      this.state.mode === "edit" ? false : true,
+      this.state.theme,
+      "MLA"
+    );
+  }
+  toAPA() {
+    this.setState({ citationStyle: "APA" });
+    this.componentDidMount(
+      this.state.mode === "edit" ? false : true,
+      this.state.theme,
+      "APA"
+    );
+  }
+  componentDidMount(isChecker = false, theme = "white", citationStyle = "APA") {
     $(".checker").css({ display: "none" });
     $(".editor").css({ display: "block" });
+    let citationRX;
 
     $(document).ready(function() {
+      $("textarea").focus();
+      regexes[regexes.length - 2] =
+        citationStyle === "APA" ? APAcitationRX : MLAcitationRX;
+      citationRX = regexes[regexes.length - 2];
       let white = "#e6e6e6",
         black = "#2d2d2d";
       let fontColor = theme === "white" ? black : white;
@@ -214,6 +241,7 @@ class Editor extends React.Component {
         }
 
         text = text.replace(re, "<span>$&</span>");
+
         // text = text
         //   .replace(/\n$/, "\n\n");
       }
@@ -306,6 +334,12 @@ class Editor extends React.Component {
 
             var text = $("textarea").val();
 
+            let wrongThesis = text.match(thesisRX);
+            let anyThesis = text.match(/(?<=\.\s)[^\.]+(?=\.\n)/);
+            let concludingSentences = [
+              ...text.matchAll(/(?<=\.\s)[^\.]+(?=\.\n)/g)
+            ].map(s => s[0]);
+
             let repetitions = [...text.matchAll(repetitionsRX)].map(
               repetition => {
                 return repetition[0];
@@ -325,23 +359,75 @@ class Editor extends React.Component {
                   return text;
                 }
               }
-            } else if (
-              /(?:\%|\d{1,4}|example|instance|also|addition|likewise|moreover|furthermore|besides|another)/gi.test(
-                mistake
-              ) &&
-              concludingSentencesRX.test(". " + mistake + "\n")
-            ) {
-              $(".comment-heading").text(`Structure`);
-              $(".comment-text").text(
-                `Concluding sentence must summarize the paragraph's main point`
-              );
-              $(this).html(mistake);
+            } else if (concludingSentences.includes(mistake)) {
+              if (anyThesis && mistake !== anyThesis) {
+                $(".comment-heading").text(`Structure`);
+                $(".comment-text").text(
+                  `Concluding sentence must summarize the paragraph's main point.\n`
+                );
+                if (/\(.*\)(?=$)/.test(mistake)) {
+                  $(".comment-text").html(
+                    $(".comment-text").text() +
+                      "\nNever provide citations at the end of paragraphs."
+                  );
+                }
+                $(this).html(mistake);
+              }
+
               return text;
             } else if (clean(vague).includes(mistake.toLowerCase())) {
               $(".comment-heading").text("Vagueness");
               $(".comment-text").html(
                 `Vague word or phrase. Consider replacing with a more specific word. Check out synonyms for <a class='links' href='${thesaurus}${mistake}?s=t' target="_blank">${mistake}<a>`
               );
+              return text;
+              
+            } else if (
+              repetitions.includes(mistake) &&
+              !mistakes.includes(mistake)
+            ) {
+              $(".comment-heading").text("Repetition");
+
+              $(".comment-text").html(
+                `Avoid repeating the same words within a single sentence.\n\tCheck out synonyms for <a class='links' href='${thesaurus}${mistake}?s=t' target="_blank">${mistake}<a>`
+              );
+              if (mistake === mistake.capitalize()) {
+                $(".comment-text").html(
+                  `Do not begin two subsequent sentences with the same word.\n\tCheck out synonyms for <a class='links' href='${thesaurus}${mistake.toLowerCase()}?s=t' target="_blank">${mistake}<a>`
+                );
+              }
+
+              if (
+                mistake.includes(" ") &&
+                mistake.split(" ")[0] === mistake.split(" ")[1]
+              ) {
+                $(".comment-text").html(
+                  `You duplicated <i>${mistake.split(" ")[0]}</i>`
+                );
+                $(".btn-0")
+                  .text(`${mistake.split(" ")[0]}`)
+                  .show();
+                $(".btn-0").click(function() {
+                  let replaceRX = new RegExp(`\\b${mistake}\\b`, "g");
+
+                  $("textarea").val(
+                    $("textarea")
+                      .val()
+                      .replace(replaceRX, `${mistake.split(" ")[0]}`)
+                  );
+                  $(`span:contains("${mistake}")`).css("display", "none");
+                  $(".comment").css({ opacity: "0" });
+                  $(".btn-0").unbind("click");
+                  setTimeout(doUndo(), 1);
+                });
+              }
+              return text;
+            } else if (wrongThesis && mistake === wrongThesis[0]) {
+              $(".comment-heading").text("Incorrect Thesis");
+              $(".comment-text").html(
+                `<a href=${thesisURL} class=links>Thesis Statement</a> has to present the main point, argument, claim of the essay`
+              );
+              $(this).html(mistake);
               return text;
             } else if (pronouns.includes(mistake.toLowerCase())) {
               $(".comment-heading").text("Wrong pronoun");
@@ -393,10 +479,45 @@ class Editor extends React.Component {
                   );
 
               return text;
-            } else if (APAcitationRX.test(mistake)) {
-              $(".comment-heading").text("Formatting");
+            } else if (citationRX.test(mistake)) {
+              let repl = mistake
+              if (citationStyle === 'APA') {
+                repl = mistake
+                .replace(/and/,'&')
+                .replace(/(?<!,) (?=\d{4})/,', ')
+                .replace(/(?<=\(\w+), &/,' &')
+                .replace(/(?<=(\w+, ){1,4}\w+) &/,', &')
+              
+              } else {
+                repl = mistake
+                .replace(/&/,'and')
+                .replace(/, (?=\d+)/,' ')
+                .replace(/, (?=and)/,' ')
+                .replace(/(?<=\(\w+)((,)? \w+( and)?){3,5}(?= \d+)/,' et al.')
+                .replace(/ [1-2][0-9][0-9][0-9](?=\))/,'')
+              }
+              if (repl && repl !== mistake) {
+                $(".btn-0")
+                .text(repl)
+                .show();
+                $(".btn-0").click(function() {
+                  let replaceRX = new RegExp(`${mistake}`, "g");
+                  $("textarea").val(
+                    $("textarea")
+                      .val()
+                      .replace(replaceRX, $(this).text()).replace(/(\(){2,}/,'(').replace(/(\)){2,}/g,')')
+                      .replace(/(\,){2,}/g, ",")
+                  );
+                  $(`span:contains("${mistake}")`).css("display", "none");
+                  $(".comment").css({ opacity: "0" });
+                  $(".btn-0").unbind("click");
+                  setTimeout(doUndo(), 1);
+                });
+              }
+           
+              $(".comment-heading").text("Citation Formatting");
               $(".comment-text").html(
-                `Incorrect citation formatting, please check <a href=${citations} target='_blank' class='links'>Purdue Owl</a>`
+                `Incorrect ${citationStyle} citation formatting, please check <a href=${citations} target='_blank' class='links'>Purdue Owl</a>`
               );
               return text;
             } else if (wordiness.includes(mistake)) {
@@ -440,19 +561,11 @@ class Editor extends React.Component {
                   );
                   $(`span:contains("${mistake}")`).css("display", "none");
                   $(".comment").css({ opacity: "0" });
-                  function doUndo() {
-                    document.execCommand("undo", false, null);
-                  }
+
                   $(`.btn-${i.toString()}`).unbind("click");
                   setTimeout(doUndo(), 1);
                 });
               }
-              return text;
-            } else if (mistake === "another" || mistake === "also") {
-              $(".comment-heading").text("Tautology");
-              $(".comment-text").text(
-                `Do not use "${mistake}" after an introductory word that has the same meaning`
-              );
               return text;
             } else if (
               /(?:\%|\d{1,4})/.test(mistake) &&
@@ -474,7 +587,11 @@ class Editor extends React.Component {
                 `Avoid passive voice in academic writing as it is considered vague`
               );
               return text;
-            } else if (mistake === "This" || mistake === "These") {
+            } else if (
+              mistake === "This" ||
+              mistake === "These" ||
+              mistake === "Those"
+            ) {
               $(".comment-heading").text("Unclear Antecedent");
               $(".comment-text").text(
                 `Avoid using a determiner without a corresponding noun at the beginning of the sentence as it might be confusing what exactly "${mistake}" refers to`
@@ -482,8 +599,8 @@ class Editor extends React.Component {
               return text;
             } else if (/^\d{4}$/.test(mistake)) {
               $(".comment-heading").text("Outdated source");
-              $(".comment-text").text(
-                "Use sources published within the last 10 years"
+              $(".comment-text").html(
+                "Use sources published within the last <b class='important'>10</b> years"
               );
               return text;
             } else if (punctuationRXinline.test(mistake)) {
@@ -515,10 +632,6 @@ class Editor extends React.Component {
                 );
                 $(`span:contains("${mistake}")`).css("display", "none");
                 $(".comment").css({ opacity: "0" });
-                function doUndo() {
-                  document.execCommand("undo", false, null);
-                }
-
                 $(".btn-0").unbind("click");
                 setTimeout(doUndo(), 1);
               });
@@ -527,10 +640,22 @@ class Editor extends React.Component {
             } else if (
               replaceArray.includes(mistake) ||
               replaceArray.includes(mistake.capitalize()) ||
-              replaceArray.includes(mistake.toLowerCase()) ||
-              /\b(?:end|ended|ends|ending)\b\s\bup\b\s\b\w+ing\b/.test(mistake)
+              replaceArray.includes(mistake.toLowerCase())
             ) {
               $(".comment-text").text("");
+
+              // insert comment text for replace if it is available
+              if (new RegExp(`${mistake}`, "gi").test(shortForms)) {
+                $(".comment-text").html(
+                  `Do not use contractions (short forms) in academic writing as they are considered informal`
+                );
+              }
+              if (new RegExp(`${mistake}`, "gi").test(british)) {
+                $(".comment-text").html(
+                  `Prefer American English (unless you are required to write in British)`
+                );
+              }
+
               $(".comment").css("cursor", "pointer");
               $(".comment-heading").text("Replace");
               if (replacePVs.includes(mistake)) {
@@ -540,13 +665,12 @@ class Editor extends React.Component {
                 for (var r = 0; r < replace.length; r++) {
                   let pair = replace[r];
 
-                  if (
-                    clean(Object.keys(pair)[0]) === mistake ||
-                    /\b(?:end|ended|ends|ending)\b\s\bup\b\s\b\w+ing\b/.test(
-                      mistake
-                    )
-                  ) {
+                  if (clean(Object.keys(pair)[0]) === mistake) {
                     let repl = Object.values(pair)[0];
+                    if (/\[.*\]/.test(repl)) {
+                      $(".comment-text").text(repl.match(/(?<=\[).*(?=\])/)[0]);
+                      repl = repl.replace(/\[.*\]/g, "");
+                    }
 
                     if (!repl.includes(",")) {
                       $(`.btn-0`)
@@ -562,10 +686,6 @@ class Editor extends React.Component {
                         );
                         $(`span:contains("${mistake}")`).css("display", "none");
                         $(".comment").css({ opacity: "0" });
-
-                        function doUndo() {
-                          document.execCommand("undo", false, null);
-                        }
                         setTimeout(doUndo(), 1);
                         $(".comment-replace")
                           .text(``)
@@ -591,9 +711,6 @@ class Editor extends React.Component {
                             "none"
                           );
                           $(".comment").css({ opacity: "0" });
-                          function doUndo() {
-                            document.execCommand("undo", false, null);
-                          }
                           setTimeout(doUndo(), 1);
                           $(".comment-replace")
                             .text(``)
@@ -617,6 +734,10 @@ class Editor extends React.Component {
                     clean(Object.keys(pair)[0]) === mistake.toLowerCase()
                   ) {
                     let repl = Object.values(pair)[0];
+                    if (/\[.*\]/.test(repl)) {
+                      $(".comment-text").text(repl.match(/(?<=\[).*(?=\])/)[0]);
+                      repl = repl.replace(/\[.*\]/g, "");
+                    }
                     if (!repl.includes(",")) {
                       repl = mistake !== "America" ? repl.capitalize() : repl;
                       $(".btn-0")
@@ -632,9 +753,6 @@ class Editor extends React.Component {
                         );
                         $(`span:contains("${mistake}")`).css("display", "none");
                         $(".comment").css({ opacity: "0" });
-                        function doUndo() {
-                          document.execCommand("undo", false, null);
-                        }
                         setTimeout(doUndo(), 1);
                         $(".comment-replace")
                           .text(``)
@@ -663,9 +781,6 @@ class Editor extends React.Component {
                             "none"
                           );
                           $(".comment").css({ opacity: "0" });
-                          function doUndo() {
-                            document.execCommand("undo", false, null);
-                          }
                           setTimeout(doUndo(), 1);
                           $(".comment-replace")
                             .text(``)
@@ -681,50 +796,7 @@ class Editor extends React.Component {
                   }
                 }
               }
-            } else if (
-              repetitions.includes(mistake) &&
-              !mistakes.includes(mistake)
-            ) {
-              $(".comment-heading").text("Repetition");
-
-              $(".comment-text").html(
-                `Avoid repeating the same words within a single sentence.\n\tCheck out synonyms for <a class='links' href='${thesaurus}${mistake}?s=t' target="_blank">${mistake}<a>`
-              );
-              if (mistake === mistake.capitalize()) {
-                $(".comment-text").html(
-                  `Do not begin two subsequent sentences with the same word.\n\tCheck out synonyms for <a class='links' href='${thesaurus}${mistake.toLowerCase()}?s=t' target="_blank">${mistake}<a>`
-                );
-              }
-
-              if (
-                mistake.includes(" ") &&
-                mistake.split(" ")[0] === mistake.split(" ")[1]
-              ) {
-                $(".comment-text").html(
-                  `You duplicated <i>${mistake.split(" ")[0]}</i>`
-                );
-                $(".btn-0")
-                  .text(`${mistake.split(" ")[0]}`)
-                  .show();
-                $(".btn-0").click(function() {
-                  let replaceRX = new RegExp(`\\b${mistake}\\b`, "g");
-
-                  $("textarea").val(
-                    $("textarea")
-                      .val()
-                      .replace(replaceRX, `${mistake.split(" ")[0]}`)
-                  );
-                  $(`span:contains("${mistake}")`).css("display", "none");
-                  $(".comment").css({ opacity: "0" });
-                  function doUndo() {
-                    document.execCommand("undo", false, null);
-                  }
-                  $(".btn-0").unbind("click");
-                  setTimeout(doUndo(), 1);
-                });
-              }
-              return text;
-            }
+            } 
 
             for (var p = 0; p < prepositionalRX.length; p++) {
               let reg = prepositionalRX[p];
@@ -837,6 +909,11 @@ class Editor extends React.Component {
         <div className="buttons">
           <Theme switchTheme={this.switchTheme} mode={this.state.mode} />
           <Mode toEditor={this.toEditor} toChecker={this.toChecker} />
+          <Style
+            toMLA={this.toMLA}
+            toAPA={this.toAPA}
+            citationStyle={this.state.citationStyle}
+          />
         </div>
       </div>
     );

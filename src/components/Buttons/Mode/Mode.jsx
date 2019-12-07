@@ -20,9 +20,8 @@ class Mode extends React.Component {
     } else {
       mode = "edit";
     }
-    this.setState({ mode: mode });
+    this.setState({mode})
   }
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.mode !== this.state.mode) {
       if (this.state.mode === "check") {
@@ -37,7 +36,6 @@ class Mode extends React.Component {
         $('.backdrop').css({zIndex: 'auto'})
         $('.highlights').css({color: "transparent"})
         this.props.toEditor()
-        
       }
     }
   }

@@ -84,6 +84,7 @@ let transitions = [
     "Accordingly",
     "Thereupon",
     "Forthwith",
+    "Unfortunately"
 ]
 
 

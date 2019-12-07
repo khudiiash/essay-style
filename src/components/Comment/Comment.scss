@@ -49,12 +49,14 @@
         width: 256px;
         padding: 0;
         margin: 0;
-        height: 40px;
-        font-size: 16px;
-        width: 90%;
+        min-height: 30px;
+        width: auto;
+        font-size: 15px;
+        min-width: 90%;
         margin: 10px 10px;
-        line-height: 40px;
+        line-height: 30px;
         transition: all 0.3s;
+        cursor: pointer;
         span {
           transition: all 0.3s;
           transform: scale(1, 1);

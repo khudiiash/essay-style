@@ -1,0 +1,2 @@
+let shortForms = `don’t|doesn’t|didn’t|aren’t|it’s|that’s|isn’t|won’t|couldn’t|could’ve|shouldn’t|should’ve|wouldn’t|would’ve|can’t|aren’t|wasn’t|weren’t|hasn’t|hadn’t|there’s|here’s|he’s|he’ll|he’d|she’s|she’ll|she’d|they’ll|they’d|they’re|i’m|i’ve|i’ll|i’d|wanna|gonna|gotto|don't|doesn't|didn't|aren't|it's|that's|isn't|won't|couldn't|could've|shouldn't|should've|wouldn't|would've|can't|aren't|wasn't|weren't|hasn't|hadn't|there's|here's|won't|he's|he'll|he'd|she's|she'll|she'd|they'll|they'd|they're|i'm|i'll|i've|i'd`
+export default shortForms

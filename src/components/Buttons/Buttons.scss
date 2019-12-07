@@ -1,20 +1,21 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
 
 .switch {
-  // position: absolute;
-  // top: 90px;
-  // left: 72.5%;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1;
   width: fit-content;
+  height: 40px;
   
   h2 {
     font-family: "Montserrat","Georgia",serif;
     font-weight: 600;
     text-transform: uppercase;
     font-size: 13px;
+    height: 26px;
+    line-height: 26px;
+    vertical-align: middle;
     margin-right: 10px;
     color: rgb(80, 80, 80);
     user-select: none;
