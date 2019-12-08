@@ -33,7 +33,7 @@
   margin-right: .5rem;
   width: 46px;
   height: 26px;
-  background-color: #2e2e2e;
+  background-color: #5e5e5e3f;
   border-radius: 23px;
   vertical-align: text-bottom;
   transition: all 0.3s linear;
@@ -46,7 +46,7 @@
   left: 0;
   width: 42px;
   height: 22px;
-  background-color: rgb(46, 46, 46);
+  background-color: rgb(104, 104, 104);
   border-radius: 11px;
   transform: translate3d(2px, 2px, 0) scale3d(1, 1, 1);
   transition: all 0.25s linear;
@@ -78,4 +78,4 @@
 
 .form-switch input:checked + i::before { transform: translate3d(18px, 2px, 0) scale3d(0, 0, 0); }
 
-.form-switch input:checked + i::after { background-color: rgba(56,56,56,1);transform: translate3d(22px, 2px, 0); }
+.form-switch input:checked + i::after { background-color: rgb(105, 105, 105);transform: translate3d(22px, 2px, 0); }

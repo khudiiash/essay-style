@@ -257,6 +257,7 @@ let phrasalVerbs = [
 `(?:use|uses|used|using) up`,
 `(?:wash|washes|washed|washing) off`,
 `(?:wake|wakes|waked|waking) up`,
+`(?:walk|walks|walked|walking) (?:away|through)`,
 `(?:wash|washes|washed|washing) away`,
 `(?:wash|washes|washed|washing) up`,
 `(?:watch|watches|watched|watching) out`,
