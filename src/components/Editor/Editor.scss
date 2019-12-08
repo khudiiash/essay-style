@@ -72,8 +72,10 @@ $white-selected: rgb(255, 176, 176);
   padding: 40px;
   text-indent: 2em;
   padding-top: 50px;
-  font: 20px/28px 'Open Sans', sans-serif;
+  font: 19px/28px 'Open Sans', sans-serif;
   @include white-scroll-bar;
+  line-height: 1.6em;
+
   
 
 }
@@ -130,7 +132,7 @@ height: 97vh;
 border: none;
 resize: none;
 color: $white-color;
-font-size: 20px;
+font-size: 19px;
 
 
 }
@@ -144,6 +146,8 @@ span {
   z-index: 1;
   cursor: default;
   transition: all 50ms;
+
+  
   &:hover {
       z-index: 1;
       position: relative;
@@ -174,4 +178,17 @@ span {
 .important {
   font-size: 16px;
   color: rgb(255, 86, 86)
+}
+
+.repetitionsRX {
+  border-bottom: 2px rgb(101, 182, 248) solid;
+  &:hover {
+    background-color: rgb(202, 221, 255);
+  }
+}
+.sentencesRX {
+  border-bottom: 2px rgba(255, 0, 0, 0.281) solid;
+  &:hover {
+    background-color: rgb(255, 202, 202);
+  }
 }
