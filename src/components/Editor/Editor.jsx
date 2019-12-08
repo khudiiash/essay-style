@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-extend-native */
 import React from "react";
 import "./Editor.scss";
@@ -66,7 +67,7 @@ let regexes = []
   .concat(wordOrderRX)
   .concat(thesisRX)
   .concat(APAcitationRX)
-  .concat(outdated)
+  .concat(outdated);
 
 let replaceArray = [];
 
@@ -105,7 +106,8 @@ String.prototype.capitalize = function() {
 function doUndo() {
   document.execCommand("undo", false, null);
 }
-
+let previous;
+let timer, displayTimer;
 
 class Editor extends React.Component {
   constructor() {
@@ -282,21 +284,19 @@ class Editor extends React.Component {
           enableScroll();
         });
 
-        let timer, displayTimer;
-
         $("span").hover(
           function() {
-            clearTimeout(timer);
-            clearTimeout(displayTimer);
+            // clearTimeout(timer);
+            // clearTimeout(displayTimer);
 
-            $(".comment-replaces")
-              .children()
-              .hide();
+            var id = window.setTimeout(function() {}, 0);
+            while (id--) {
+              window.clearTimeout(id); // will do nothing if no timeout with id is present
+            }
 
             $(".comment").css("cursor", "default");
-            $(".comment-replace")
-              .text("")
-              .hide();
+            $(".comment-replace").unbind("click");
+
             var position = $(this).position();
             var TAposition = $("textarea").position();
             var commentWidth = $(".comment").width();
@@ -314,7 +314,7 @@ class Editor extends React.Component {
                   TAposition.left -
                   commentWidth / 2 +
                   spanWidth / 2}px`,
-                top: `${position.top + spanHeight * 2 + 10}px`
+                top: `${position.top + spanHeight * 2 + 5}px`
               });
             } else {
               $(".comment").css({
@@ -334,6 +334,8 @@ class Editor extends React.Component {
 
             var text = $("textarea").val();
 
+            setTimeout(() => console.log(mistake), 500);
+
             let wrongThesis = text.match(thesisRX);
             let anyThesis = text.match(/(?<=\.\s)[^\.]+(?=\.\n)/);
             let concludingSentences = [
@@ -348,6 +350,13 @@ class Editor extends React.Component {
 
             mistake = mistake.replace(/<span([^\>]+)?>/g, "");
             mistake = mistake.replace(/<\/span>/g, "");
+            if (mistake !== previous) {
+              $(".comment-replaces")
+                .children()
+                .hide();
+            }
+
+            previous = mistake;
 
             if (clean(weakWords).includes(mistake.toLowerCase())) {
               for (var w = 0; w < weakWords.length; w++) {
@@ -381,7 +390,6 @@ class Editor extends React.Component {
                 `Vague word or phrase. Consider replacing with a more specific word. Check out synonyms for <a class='links' href='${thesaurus}${mistake}?s=t' target="_blank">${mistake}<a>`
               );
               return text;
-              
             } else if (
               repetitions.includes(mistake) &&
               !mistakes.includes(mistake)
@@ -415,7 +423,7 @@ class Editor extends React.Component {
                       .val()
                       .replace(replaceRX, `${mistake.split(" ")[0]}`)
                   );
-                  $(`span:contains("${mistake}")`).css("display", "none");
+                  $(`span:contains(${mistake})`).css("display", "none");
                   $(".comment").css({ opacity: "0" });
                   $(".btn-0").unbind("click");
                   setTimeout(doUndo(), 1);
@@ -432,7 +440,7 @@ class Editor extends React.Component {
             } else if (pronouns.includes(mistake.toLowerCase())) {
               $(".comment-heading").text("Wrong pronoun");
               $(".comment-text").html(
-                "Do not use 1st and 2nd person pronouns such as <i>we</i>, <i>us</i>, <i>our</i>, <i>you</i>, <i>your</i>"
+                "Do not use 1st and 2nd person pronouns such as <i class='important'>we</i>, <i class='important'>us</i>, <i class='important'>our</i>, <i class='important'>you</i>, <i class='important'>your</i>"
               );
               return text;
             } else if (
@@ -480,41 +488,57 @@ class Editor extends React.Component {
 
               return text;
             } else if (citationRX.test(mistake)) {
-              let repl = mistake
-              if (citationStyle === 'APA') {
+              let repl = mistake;
+              if (citationStyle === "APA") {
                 repl = mistake
-                .replace(/and/,'&')
-                .replace(/(?<!,) (?=\d{4})/,', ')
-                .replace(/(?<=\(\w+), &/,' &')
-                .replace(/(?<=(\w+, ){1,4}\w+) &/,', &')
-              
+                  .replace(/and/, "&")
+                  .replace(/(?<!,) (?=\d+)/, ", ")
+                  .replace(/(?<=\(\w+), &/, " &")
+                  .replace(/(?<=(\w+, ){1,4}\w+) &/, ", &")
+                  .replace(/(?<=\d+) (?=p)/, ", ")
+                  .replace(
+                    /(?<=\d{4}(,\s)?)(?:page|pg)(?:\.|,)? (?=\d+)/,
+                    "p. "
+                  )
+                  .replace(
+                    /(?<=\(\w+)((,)? \w+(, &)?){4,}(?=, \d{4})/,
+                    " et al."
+                  )
+                  .replace(/(?<=\w+, )\b\d{1,3}\b/, "2019");
               } else {
                 repl = mistake
-                .replace(/&/,'and')
-                .replace(/, (?=\d+)/,' ')
-                .replace(/, (?=and)/,' ')
-                .replace(/(?<=\(\w+)((,)? \w+( and)?){3,5}(?= \d+)/,' et al.')
-                .replace(/ [1-2][0-9][0-9][0-9](?=\))/,'')
+                  .replace(/&/, "and")
+                  .replace(/, (?=\d+)/, " ")
+                  .replace(/, (?=and)/, " ")
+                  .replace(
+                    /(?<=\(\w+)((,)? \w+( and)?){3,5}(?= \d+)/,
+                    " et al."
+                  )
+                  .replace(/ [1-2][0-9][0-9][0-9](?=\))/, "");
               }
               if (repl && repl !== mistake) {
                 $(".btn-0")
-                .text(repl)
-                .show();
+                  .text(repl)
+                  .show();
                 $(".btn-0").click(function() {
-                  let replaceRX = new RegExp(`${mistake}`, "g");
+                  let replaceRX = new RegExp(`\\b${mistake}\\b`, "g");
+                  cl(mistake);
                   $("textarea").val(
                     $("textarea")
                       .val()
-                      .replace(replaceRX, $(this).text()).replace(/(\(){2,}/,'(').replace(/(\)){2,}/g,')')
+                      .replace(replaceRX, $(this).text())
                       .replace(/(\,){2,}/g, ",")
+                      .replace(/(\(){2,}/g, "(")
+                      .replace(/(\)){2,}/g, ")")
                   );
-                  $(`span:contains("${mistake}")`).css("display", "none");
+
+                  $(`span:contains(${mistake})`).css("display", "none");
                   $(".comment").css({ opacity: "0" });
                   $(".btn-0").unbind("click");
                   setTimeout(doUndo(), 1);
                 });
               }
-           
+
               $(".comment-heading").text("Citation Formatting");
               $(".comment-text").html(
                 `Incorrect ${citationStyle} citation formatting, please check <a href=${citations} target='_blank' class='links'>Purdue Owl</a>`
@@ -559,7 +583,7 @@ class Editor extends React.Component {
                       .val()
                       .replace(replaceRX, $(this).text())
                   );
-                  $(`span:contains("${mistake}")`).css("display", "none");
+                  $(`span:contains(${mistake})`).css("display", "none");
                   $(".comment").css({ opacity: "0" });
 
                   $(`.btn-${i.toString()}`).unbind("click");
@@ -574,6 +598,9 @@ class Editor extends React.Component {
               $(".comment-heading").text("Citations");
               $(".comment-text").text(
                 "Facts, dates, figures, statistics must be cited"
+              );
+              $(`span:contains(${mistake.replace(/<span>[\s\S]+/g, "")})`).html(
+                mistake
               );
               return text;
             } else if (apostrophesRX.test(mistake)) {
@@ -630,7 +657,7 @@ class Editor extends React.Component {
                     .replace(replaceRX, $(this).text())
                     .replace(/(\,){2,}/g, ",")
                 );
-                $(`span:contains("${mistake}")`).css("display", "none");
+                $(`span:contains(${mistake})`).css("display", "none");
                 $(".comment").css({ opacity: "0" });
                 $(".btn-0").unbind("click");
                 setTimeout(doUndo(), 1);
@@ -678,18 +705,16 @@ class Editor extends React.Component {
                         .text(repl);
                       $(".btn-0").click(() => {
                         let replaceRX = new RegExp(`\\b${mistake}\\b`, "g");
+                        console.log(replaceRX);
 
                         $("textarea").val(
                           $("textarea")
                             .val()
                             .replace(replaceRX, repl)
                         );
-                        $(`span:contains("${mistake}")`).css("display", "none");
+                        $(`span:contains(${mistake})`).css("display", "none");
                         $(".comment").css({ opacity: "0" });
                         setTimeout(doUndo(), 1);
-                        $(".comment-replace")
-                          .text(``)
-                          .hide();
                         $(".btn-0").unbind("click");
                       });
                     } else {
@@ -706,15 +731,9 @@ class Editor extends React.Component {
                               .val()
                               .replace(replaceRX, $(this).text())
                           );
-                          $(`span:contains("${mistake}")`).css(
-                            "display",
-                            "none"
-                          );
+                          $(`span:contains(${mistake})`).css("display", "none");
                           $(".comment").css({ opacity: "0" });
                           setTimeout(doUndo(), 1);
-                          $(".comment-replace")
-                            .text(``)
-                            .hide();
                           $(".comment-replaces")
                             .children()
                             .unbind("click");
@@ -751,12 +770,9 @@ class Editor extends React.Component {
                             .val()
                             .replace(replaceRX, repl)
                         );
-                        $(`span:contains("${mistake}")`).css("display", "none");
+                        $(`span:contains(${mistake})`).css("display", "none");
                         $(".comment").css({ opacity: "0" });
                         setTimeout(doUndo(), 1);
-                        $(".comment-replace")
-                          .text(``)
-                          .hide();
                         $(".btn-0").unbind("click");
                       });
                     } else {
@@ -776,15 +792,9 @@ class Editor extends React.Component {
                               .val()
                               .replace(replaceRX, $(this).text())
                           );
-                          $(`span:contains("${mistake}")`).css(
-                            "display",
-                            "none"
-                          );
+                          $(`span:contains(${mistake})`).css("display", "none");
                           $(".comment").css({ opacity: "0" });
                           setTimeout(doUndo(), 1);
-                          $(".comment-replace")
-                            .text(``)
-                            .hide();
                           $(".comment-replaces")
                             .children()
                             .unbind("click");
@@ -796,7 +806,7 @@ class Editor extends React.Component {
                   }
                 }
               }
-            } 
+            }
 
             for (var p = 0; p < prepositionalRX.length; p++) {
               let reg = prepositionalRX[p];
@@ -807,26 +817,6 @@ class Editor extends React.Component {
             }
           },
           function() {
-            $(".comment").hover(
-              () => {
-                clearTimeout(timer);
-                clearTimeout(displayTimer);
-              },
-              () => {
-                clearTimeout(timer);
-                clearTimeout(displayTimer);
-                timer = setTimeout(() => {
-                  $(".comment").css({
-                    opacity: "0"
-                  });
-                }, 50);
-                displayTimer = setTimeout(() => {
-                  $(".comment").css({
-                    display: "none"
-                  });
-                }, 1);
-              }
-            );
             timer = setTimeout(() => {
               $(".comment").css({
                 opacity: "0"
@@ -837,6 +827,26 @@ class Editor extends React.Component {
                 display: "none"
               });
             }, 1000);
+            $(".comment").hover(
+              () => {
+                var id = window.setTimeout(function() {}, 0);
+                while (id--) {
+                  window.clearTimeout(id); // will do nothing if no timeout with id is present
+                }
+              },
+              () => {
+                timer = setTimeout(() => {
+                  $(".comment").css({
+                    opacity: "0"
+                  });
+                }, 1000);
+                displayTimer = setTimeout(() => {
+                  $(".comment").css({
+                    display: "none"
+                  });
+                }, 1000);
+              }
+            );
           }
         );
 
